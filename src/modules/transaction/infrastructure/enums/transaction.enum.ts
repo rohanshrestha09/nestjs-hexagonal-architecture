@@ -1,0 +1,12 @@
+export enum TRANSACTION_STATUS {
+  INITIATED = 'INITIATED',
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+}
+
+export enum TRANSACTION_HISTORY_TIME {
+  DAY = 'DAY',
+  WEEK = 'WEEK',
+  MONTH = 'MONTH',
+  YEAR = 'YEAR',
+}
