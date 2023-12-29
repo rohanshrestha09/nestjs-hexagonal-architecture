@@ -6,6 +6,6 @@ export class UserMapper {
   }
 
   public static toDomains(users: User[]): User[] {
-    return users?.map((user) => new User(user));
+    return users?.map((user) => this.toDomain(user));
   }
 }

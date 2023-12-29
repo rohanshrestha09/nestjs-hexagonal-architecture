@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionDAO } from 'src/modules/transaction/application/dao/transaction.dao';
 import { TransactionRepository } from './mysql-typeorm/repositories/transaction.repository';
-import { Transaction } from 'src/modules/transaction/domain/transaction.domain';
 import { CreateTransactionDto } from '../../application/dto/create-transaction.dto';
 import { UpdateTransactionDto } from '../../application/dto/update-transaction.dto';
+import { TransactionMapper } from '../../infrastructure/mapper/transaction.mapper';
 
 @Injectable()
 export class TransactionDAOAdapter implements TransactionDAO {
@@ -16,7 +16,7 @@ export class TransactionDAOAdapter implements TransactionDAO {
       },
     });
 
-    return new Transaction(transaction);
+    return TransactionMapper.toDomain(transaction);
   }
 
   async findUserTransactionById({
@@ -33,7 +33,7 @@ export class TransactionDAOAdapter implements TransactionDAO {
       },
     });
 
-    return new Transaction(transaction);
+    return TransactionMapper.toDomain(transaction);
   }
 
   async createTransaction(createTransactionDto: CreateTransactionDto) {
@@ -42,7 +42,7 @@ export class TransactionDAOAdapter implements TransactionDAO {
       user: { id: createTransactionDto.userId },
     });
 
-    return new Transaction(transaction);
+    return TransactionMapper.toDomain(transaction);
   }
 
   async updateTransaction(

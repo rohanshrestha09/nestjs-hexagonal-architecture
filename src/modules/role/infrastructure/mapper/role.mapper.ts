@@ -6,6 +6,6 @@ export class RoleMapper {
   }
 
   public static toDomains(roles: Role[]): Role[] {
-    return roles?.map((role) => new Role(role));
+    return roles?.map((role) => this.toDomain(role));
   }
 }

@@ -6,6 +6,6 @@ export class PrivilegeMapper {
   }
 
   public static toDomains(privileges: Privilege[]): Privilege[] {
-    return privileges?.map((privilege) => new Privilege(privilege));
+    return privileges?.map((privilege) => this.toDomain(privilege));
   }
 }
