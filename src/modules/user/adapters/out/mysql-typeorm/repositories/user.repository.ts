@@ -38,11 +38,11 @@ export class UserRepository implements BaseRepository<UserEntity> {
     criteria: FindOptionsWhere<UserEntity>,
     data: QueryDeepPartialEntity<UserEntity>,
   ) {
-    this.userRepository.update(criteria, data);
+    await this.userRepository.update(criteria, data);
   }
 
   async delete(criteria: FindOptionsWhere<UserEntity>) {
-    this.userRepository.delete(criteria);
+    await this.userRepository.delete(criteria);
   }
 
   async count() {

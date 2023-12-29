@@ -38,11 +38,11 @@ export class RoleRepository implements BaseRepository<RoleEntity> {
     criteria: FindOptionsWhere<RoleEntity>,
     data: QueryDeepPartialEntity<RoleEntity>,
   ) {
-    this.roleRepository.update(criteria, data);
+    await this.roleRepository.update(criteria, data);
   }
 
   async delete(criteria: FindOptionsWhere<RoleEntity>) {
-    this.roleRepository.delete(criteria);
+    await this.roleRepository.delete(criteria);
   }
 
   async count() {

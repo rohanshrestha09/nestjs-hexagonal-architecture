@@ -42,11 +42,11 @@ export class TransactionRepository
     criteria: FindOptionsWhere<TransactionEntity>,
     data: QueryDeepPartialEntity<TransactionEntity>,
   ) {
-    this.transactionRepository.update(criteria, data);
+    await this.transactionRepository.update(criteria, data);
   }
 
   async delete(criteria: FindOptionsWhere<TransactionEntity>) {
-    this.transactionRepository.delete(criteria);
+    await this.transactionRepository.delete(criteria);
   }
 
   async count() {

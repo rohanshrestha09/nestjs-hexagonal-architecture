@@ -40,11 +40,11 @@ export class PrivilegeRepository implements BaseRepository<PrivilegeEntity> {
     criteria: FindOptionsWhere<PrivilegeEntity>,
     data: QueryDeepPartialEntity<PrivilegeEntity>,
   ) {
-    this.privilegeRepository.update(criteria, data);
+    await this.privilegeRepository.update(criteria, data);
   }
 
   async delete(criteria: FindOptionsWhere<PrivilegeEntity>) {
-    this.privilegeRepository.delete(criteria);
+    await this.privilegeRepository.delete(criteria);
   }
 
   async count(criteria?: FindManyOptions<PrivilegeEntity>) {

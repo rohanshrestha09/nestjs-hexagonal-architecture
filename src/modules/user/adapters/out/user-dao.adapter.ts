@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserConfig, UserDAO } from '../../application/dao/user.dao';
 import { UserRepository } from './mysql-typeorm/repositories/user.repository';
-import { User } from '../../domain/user.domain';
 import { CreateUserDto } from '../../application/dto/create-user.dto';
+import { UserMapper } from '../../infrastructure/mapper/user.mapper';
 
 @Injectable()
 export class UserDAOAdapter implements UserDAO {
@@ -28,7 +28,7 @@ export class UserDAOAdapter implements UserDAO {
       relations,
     });
 
-    return new User(user);
+    return UserMapper.toDomain(user);
   }
 
   async findUserByEmail(email: string, { select, relations }: UserConfig) {
@@ -38,7 +38,7 @@ export class UserDAOAdapter implements UserDAO {
       relations,
     });
 
-    return user ? new User(user) : null;
+    return user ? UserMapper.toDomain(user) : null;
   }
 
   async createUser({ roleId, ...data }: CreateUserDto) {
@@ -47,6 +47,6 @@ export class UserDAOAdapter implements UserDAO {
       role: { id: roleId },
     });
 
-    return new User(user);
+    return UserMapper.toDomain(user);
   }
 }

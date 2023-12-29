@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrivilegeDAO } from '../../application/dao/privilege.dao';
 import { PrivilegeRepository } from './mysql-typeorm/repositories/privilege.repository';
-import { Privilege } from '../../domain/privilege.domain';
 import { CreatePrivilegeDto } from '../../application/dto/create-privilege.dto';
 import { QueryPrivilegeDto } from '../../application/dto/query-privilege.dto';
+import { PrivilegeMapper } from '../../infrastructure/mapper/privilege.mapper';
 // import { In } from 'typeorm';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class PrivilegeDAOAdapter implements PrivilegeDAO {
       where: { id },
     });
 
-    return new Privilege(privilege);
+    return PrivilegeMapper.toDomain(privilege);
   }
 
   async findPrivilegeByName(name: string) {
@@ -23,7 +23,7 @@ export class PrivilegeDAOAdapter implements PrivilegeDAO {
       where: { name },
     });
 
-    return new Privilege(privilege);
+    return PrivilegeMapper.toDomain(privilege);
   }
 
   async findAllPrivileges({ page, size, sort, order }: QueryPrivilegeDto) {
@@ -37,10 +37,10 @@ export class PrivilegeDAOAdapter implements PrivilegeDAO {
 
     const count = await this.privilegeRepository.count();
 
-    return [
-      privileges?.map((privilege) => new Privilege(privilege)),
-      count,
-    ] as [Privilege[], number];
+    return [PrivilegeMapper.toDomains(privileges), count] as [
+      ReturnType<(typeof PrivilegeMapper)['toDomains']>,
+      number,
+    ];
   }
 
   async findAllPrivilegeByNames() {
@@ -48,12 +48,12 @@ export class PrivilegeDAOAdapter implements PrivilegeDAO {
       // where: { name: In(names) },
     });
 
-    return privileges?.map((privilege) => new Privilege(privilege));
+    return PrivilegeMapper.toDomains(privileges);
   }
 
   async createPrivilege(createPrivilegeDto: CreatePrivilegeDto) {
     const privilege = await this.privilegeRepository.create(createPrivilegeDto);
 
-    return new Privilege(privilege);
+    return PrivilegeMapper.toDomain(privilege);
   }
 }
