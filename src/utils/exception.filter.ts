@@ -6,7 +6,6 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { TypeORMError } from 'typeorm';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -23,12 +22,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     let httpMessage =
-      exception instanceof HttpException
-        ? exception.message
-        : 'Something went wrong';
+      exception instanceof Error ? exception.message : 'Something went wrong';
 
     httpMessage =
-      exception instanceof TypeORMError ? exception.message : httpMessage;
+      exception instanceof HttpException ? exception.message : httpMessage;
 
     const responseBody = {
       statusCode: httpStatus,
