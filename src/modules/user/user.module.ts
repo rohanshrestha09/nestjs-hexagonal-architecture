@@ -8,16 +8,21 @@ import { UserRepository } from './adapters/out/mysql-typeorm/repositories/user.r
 import { CreateUserUseCase } from './application/usecases/create-user.usecase';
 import { GetUserUseCase } from './application/usecases/get-user.usecase';
 import { CheckUserUseCase } from './application/usecases/check-user.usecase';
+import { BaseRepository } from 'src/base/repository/base.repository';
+import { User } from './domain/user.domain';
 
 @Global()
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
   providers: [
-    UserRepository,
     CreateUserUseCase,
     GetUserUseCase,
     CheckUserUseCase,
+    {
+      provide: BaseRepository<User>,
+      useClass: UserRepository,
+    },
     {
       provide: UserDAO,
       useClass: UserDAOAdapter,

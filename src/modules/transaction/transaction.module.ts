@@ -11,17 +11,22 @@ import { GetTransactionUseCase } from './application/usecases/get-transaction.us
 import { UpdateTransactionUseCase } from './application/usecases/update-transaction.usecase';
 import { KhaltiTransactionUseCase } from './application/usecases/khalti-transaction.usecase';
 import { EsewaTransactionUseCase } from './application/usecases/esewa-transaction.usecase';
+import { BaseRepository } from 'src/base/repository/base.repository';
+import { Transaction } from './domain/transaction.domain';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TransactionEntity]), OnlinePaymentModule],
   controllers: [TransactionController],
   providers: [
-    TransactionRepository,
     CreateTransactionUseCase,
     GetTransactionUseCase,
     UpdateTransactionUseCase,
     KhaltiTransactionUseCase,
     EsewaTransactionUseCase,
+    {
+      provide: BaseRepository<Transaction>,
+      useClass: TransactionRepository,
+    },
     {
       provide: TransactionDAO,
       useClass: TransactionDAOAdapter,

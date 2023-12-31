@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionDAO } from 'src/modules/transaction/application/dao/transaction.dao';
-import { TransactionRepository } from './mysql-typeorm/repositories/transaction.repository';
 import { CreateTransactionDto } from '../../application/dto/create-transaction.dto';
 import { UpdateTransactionDto } from '../../application/dto/update-transaction.dto';
 import { TransactionMapper } from '../../infrastructure/mapper/transaction.mapper';
+import { BaseRepository } from 'src/base/repository/base.repository';
+import { Transaction } from '../../domain/transaction.domain';
 
 @Injectable()
 export class TransactionDAOAdapter implements TransactionDAO {
-  constructor(private transactionRepository: TransactionRepository) {}
+  constructor(private transactionRepository: BaseRepository<Transaction>) {}
 
   async findTransactionById(transactionId: number) {
     const transaction = await this.transactionRepository.findOneOrThrow({

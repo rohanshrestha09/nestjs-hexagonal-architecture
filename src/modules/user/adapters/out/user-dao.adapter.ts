@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { UserConfig, UserDAO } from '../../application/dao/user.dao';
-import { UserRepository } from './mysql-typeorm/repositories/user.repository';
 import { CreateUserDto } from '../../application/dto/create-user.dto';
 import { UserMapper } from '../../infrastructure/mapper/user.mapper';
+import { BaseRepository } from 'src/base/repository/base.repository';
+import { User } from '../../domain/user.domain';
 
 @Injectable()
 export class UserDAOAdapter implements UserDAO {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: BaseRepository<User>) {}
 
   async findUserPassword(userId: string) {
     const user = await this.userRepository.findOneOrThrow({

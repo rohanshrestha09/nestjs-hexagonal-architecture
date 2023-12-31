@@ -7,6 +7,8 @@ import { PrivilegeDAO } from './application/dao/privilege.dao';
 import { PrivilegeDAOAdapter } from './adapters/out/privilege-dao.adapter';
 import { CreatePrivilegeUseCase } from './application/usecases/create-privilege.usecase';
 import { GetPrivilegeUseCase } from './application/usecases/get-privilege.usecase';
+import { BaseRepository } from 'src/base/repository/base.repository';
+import { Privilege } from './domain/privilege.domain';
 
 @Global()
 @Module({
@@ -16,6 +18,10 @@ import { GetPrivilegeUseCase } from './application/usecases/get-privilege.usecas
     PrivilegeRepository,
     CreatePrivilegeUseCase,
     GetPrivilegeUseCase,
+    {
+      provide: BaseRepository<Privilege>,
+      useClass: PrivilegeRepository,
+    },
     {
       provide: PrivilegeDAO,
       useClass: PrivilegeDAOAdapter,

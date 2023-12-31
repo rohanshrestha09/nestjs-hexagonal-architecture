@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Privilege } from '../../domain/privilege.domain';
 import { PrivilegeDAO } from '../../application/dao/privilege.dao';
-import { PrivilegeRepository } from './mysql-typeorm/repositories/privilege.repository';
+import { BaseRepository } from 'src/base/repository/base.repository';
 import { CreatePrivilegeDto } from '../../application/dto/create-privilege.dto';
 import { QueryPrivilegeDto } from '../../application/dto/query-privilege.dto';
 import { PrivilegeMapper } from '../../infrastructure/mapper/privilege.mapper';
@@ -8,7 +9,7 @@ import { PrivilegeMapper } from '../../infrastructure/mapper/privilege.mapper';
 
 @Injectable()
 export class PrivilegeDAOAdapter implements PrivilegeDAO {
-  constructor(private privilegeRepository: PrivilegeRepository) {}
+  constructor(private privilegeRepository: BaseRepository<Privilege>) {}
 
   async findPrivilegeById(id: number) {
     const privilege = await this.privilegeRepository.findOneOrThrow({
