@@ -45,7 +45,7 @@ export class UserRepository implements BaseRepository<UserEntity> {
     await this.userRepository.delete(criteria);
   }
 
-  async count() {
-    return this.userRepository.count();
+  async count(criteria?: FindManyOptions<UserEntity>) {
+    return this.userRepository.count(criteria);
   }
 }

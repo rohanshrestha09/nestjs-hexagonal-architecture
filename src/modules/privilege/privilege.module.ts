@@ -1,6 +1,8 @@
 import { Global, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PrivilegeEntity } from './adapters/out/mysql-typeorm/entites/privilege.entity';
+// import { TypeOrmModule } from '@nestjs/typeorm';
+import { SequelizeModule } from '@nestjs/sequelize';
+// import { PrivilegeEntity } from './adapters/out/mysql-typeorm/entites/privilege.entity';
+import { PrivilegeEntity } from './adapters/out/mysql-sequelize/entities/privilege.entity';
 import { PrivilegeController } from './adapters/in/web/privilege.controller';
 import { PrivilegeRepository } from './adapters/out/mysql-typeorm/repositories/privilege.repository';
 import { PrivilegeDAO } from './application/dao/privilege.dao';
@@ -12,7 +14,10 @@ import { Privilege } from './domain/privilege.domain';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([PrivilegeEntity])],
+  imports: [
+    // TypeOrmModule.forFeature([PrivilegeEntity]),
+    SequelizeModule.forFeature([PrivilegeEntity]),
+  ],
   controllers: [PrivilegeController],
   providers: [
     PrivilegeRepository,

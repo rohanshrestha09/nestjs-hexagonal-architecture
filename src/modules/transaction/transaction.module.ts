@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TransactionEntity } from './adapters/out/mysql-typeorm/entities/transaction.entity';
+import { SequelizeModule } from '@nestjs/sequelize';
+// import { TypeOrmModule } from '@nestjs/typeorm';
+// import { TransactionEntity } from './adapters/out/mysql-typeorm/entities/transaction.entity';
+import { TransactionEntity } from './adapters/out/mysql-sequelize/entities/transaction.entity';
 import { TransactionController } from './adapters/in/web/transaction.controller';
-import { TransactionRepository } from './adapters/out/mysql-typeorm/repositories/transaction.repository';
+// import { TransactionRepository } from './adapters/out/mysql-typeorm/repositories/transaction.repository';
+import { TransactionRepository } from './adapters/out/mysql-sequelize/repositories/transaction.repository';
 import { TransactionDAO } from './application/dao/transaction.dao';
 import { TransactionDAOAdapter } from './adapters/out/transaction-dao.adapter';
 import { OnlinePaymentModule } from '../online-payment/online-payment.module';
@@ -15,7 +18,11 @@ import { BaseRepository } from 'src/base/repository/base.repository';
 import { Transaction } from './domain/transaction.domain';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TransactionEntity]), OnlinePaymentModule],
+  imports: [
+    // TypeOrmModule.forFeature([TransactionEntity]),
+    SequelizeModule.forFeature([TransactionEntity]),
+    OnlinePaymentModule,
+  ],
   controllers: [TransactionController],
   providers: [
     CreateTransactionUseCase,

@@ -42,10 +42,10 @@ export class UserDAOAdapter implements UserDAO {
     return user ? UserMapper.toDomain(user) : null;
   }
 
-  async createUser({ roleId, ...data }: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
     const user = await this.userRepository.create({
-      ...data,
-      role: { id: roleId },
+      ...createUserDto,
+      role: { id: createUserDto.roleId },
     });
 
     return UserMapper.toDomain(user);

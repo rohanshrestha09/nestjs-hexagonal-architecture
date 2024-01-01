@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
-type FindOptionsOrderValue = 'ASC' | 'DESC' | 'asc' | 'desc' | 1 | -1;
+type FindOptionsOrderValue = 'ASC' | 'DESC';
 
 type FindOptionsOrderProperty<Property> = Property extends Promise<infer I>
   ? FindOptionsOrderProperty<NonNullable<I>>

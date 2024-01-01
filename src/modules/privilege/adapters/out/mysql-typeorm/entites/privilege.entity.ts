@@ -10,7 +10,7 @@ import {
 import { UserEntity } from 'src/modules/user/adapters/out/mysql-typeorm/entities/user.entity';
 import { Privilege } from 'src/modules/privilege/domain/privilege.domain';
 
-@Entity()
+@Entity('privilege')
 export class PrivilegeEntity extends BaseEntity implements Privilege {
   @PrimaryGeneratedColumn()
   id: number;
