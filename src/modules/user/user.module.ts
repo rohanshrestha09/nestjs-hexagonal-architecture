@@ -17,7 +17,7 @@ import { User } from './domain/user.domain';
 @Global()
 @Module({
   imports: [
-    // TypeOrmModule.forFeature([UserEntity])
+    // TypeOrmModule.forFeature([UserEntity]),
     SequelizeModule.forFeature([UserEntity]),
   ],
   controllers: [UserController],

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Optional, OrderItem } from 'sequelize';
 import { RoleEntity } from '../entities/role.entity';
 import { BaseRepository } from 'src/base/repository/base.repository';
 import {
@@ -42,22 +43,37 @@ export class RoleRepository implements BaseRepository<RoleEntity> {
   }
 
   async findMany(options?: FindManyOptions<RoleEntity>) {
-    const sort = options?.order && Object?.keys(options?.order)?.[0];
+    const findRecurranceOrder = (order: object) => {
+      const orderItem = [] as OrderItem[];
 
-    const order = options?.order && Object.values(options?.order)?.[0];
+      Object.entries(order).forEach(([k, v]) => {
+        if (typeof v === 'string') orderItem.push([k, v]);
+
+        if (typeof v === 'object')
+          Object.entries(v).forEach(([k1, v1]) => {
+            if (typeof v1 === 'string') orderItem.push([k, k1, v1]);
+          });
+      });
+
+      return orderItem;
+    };
 
     return await this.roleRepository.findAll({
       where: options?.where,
-      include: options?.relations,
+      include:
+        options?.relations &&
+        Object.entries(options?.relations).map(([k, v]) => v && k),
       offset: options?.skip,
       limit: options?.take,
       attributes: options?.select && Object.keys(options?.select),
-      order: [sort, typeof order === 'string' && order],
+      order: options?.order && findRecurranceOrder(options?.order),
     });
   }
 
   async create(data: DeepPartial<RoleEntity>) {
-    return await this.roleRepository.create(data as { [x: string]: any });
+    return await this.roleRepository.create(
+      data as Optional<any, string | number>,
+    );
   }
 
   async update(

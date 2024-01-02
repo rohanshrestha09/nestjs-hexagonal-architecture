@@ -8,6 +8,7 @@ export class User {
   password: string;
   createdAt: Date;
   updatedAt: Date;
+  roleId: number;
   role: Role;
   privileges: Privilege[];
 
@@ -17,6 +18,7 @@ export class User {
     email,
     createdAt,
     updatedAt,
+    roleId,
     role,
     privileges,
   }: User) {
@@ -25,6 +27,7 @@ export class User {
     this.email = email;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.roleId = roleId;
     this.role = role;
     this.privileges = privileges;
   }

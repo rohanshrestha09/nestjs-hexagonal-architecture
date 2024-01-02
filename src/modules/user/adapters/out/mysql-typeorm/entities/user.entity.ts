@@ -35,6 +35,9 @@ export class UserEntity extends BaseEntity implements User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column()
+  roleId: number;
+
   @ManyToOne(() => RoleEntity, (role) => role.users, { nullable: false })
   role: RoleEntity;
 

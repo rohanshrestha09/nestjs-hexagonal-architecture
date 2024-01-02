@@ -44,6 +44,9 @@ export class TransactionEntity extends BaseEntity implements Transaction {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column()
+  userId: string;
+
   @ManyToOne(() => UserEntity, { nullable: false })
   user: UserEntity;
 }

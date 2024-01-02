@@ -45,7 +45,6 @@ export class UserDAOAdapter implements UserDAO {
   async createUser(createUserDto: CreateUserDto) {
     const user = await this.userRepository.create({
       ...createUserDto,
-      role: { id: createUserDto.roleId },
     });
 
     return UserMapper.toDomain(user);

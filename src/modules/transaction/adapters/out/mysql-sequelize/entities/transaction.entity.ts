@@ -8,9 +8,9 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Transaction } from 'src/modules/transaction/domain/transaction.domain';
+import { UserEntity } from 'src/modules/user/adapters/out/mysql-sequelize/entities/user.entity';
 import { PAYMENT_PROVIDER } from 'src/modules/online-payment/infrastructure/enums/online-payment.enum';
 import { TRANSACTION_STATUS } from 'src/modules/transaction/infrastructure/enums/transaction.enum';
-import { UserEntity } from 'src/modules/user/adapters/out/mysql-sequelize/entities/user.entity';
 
 @Table({ tableName: 'transaction', modelName: 'transaction' })
 export class TransactionEntity extends Model implements Transaction {
@@ -50,16 +50,19 @@ export class TransactionEntity extends Model implements Transaction {
   @Column({ type: DataType.FLOAT, allowNull: false })
   amount: number;
 
-  @Column({ type: DataType.DATE, defaultValue: new Date() })
+  @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
   date: Date = new Date();
 
-  @Column({ type: DataType.DATE })
+  @Column({ type: DataType.DATE, allowNull: false })
   @CreatedAt
   createdAt: Date;
 
-  @Column({ type: DataType.DATE })
+  @Column({ type: DataType.DATE, allowNull: false })
   @UpdatedAt
   updatedAt: Date;
+
+  @Column({ type: DataType.UUID, allowNull: false })
+  userId: string;
 
   @BelongsTo(() => UserEntity, 'userId')
   user: UserEntity;

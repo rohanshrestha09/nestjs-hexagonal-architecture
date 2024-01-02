@@ -29,11 +29,11 @@ export class RoleEntity extends Model implements Role {
   })
   name: ROLE;
 
-  @Column({ type: DataType.DATE })
+  @Column({ type: DataType.DATE, allowNull: false })
   @CreatedAt
   createdAt: Date;
 
-  @Column({ type: DataType.DATE })
+  @Column({ type: DataType.DATE, allowNull: false })
   @UpdatedAt
   updatedAt: Date;
 

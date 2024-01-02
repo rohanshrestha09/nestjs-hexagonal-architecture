@@ -13,6 +13,7 @@ export class Transaction {
   date: Date;
   createdAt: Date;
   updatedAt: Date;
+  userId: string;
   user: User;
 
   constructor({
@@ -26,6 +27,7 @@ export class Transaction {
     date,
     createdAt,
     updatedAt,
+    userId,
     user,
   }: Transaction) {
     this.id = id;
@@ -38,6 +40,7 @@ export class Transaction {
     this.date = date;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.userId = userId;
     this.user = user;
   }
 }

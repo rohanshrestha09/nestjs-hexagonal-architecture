@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Privilege } from 'src/modules/privilege/domain/privilege.domain';
 import { UserEntity } from 'src/modules/user/adapters/out/mysql-sequelize/entities/user.entity';
-import { UserPrivilege } from 'src/user-privilege/adapters/out/mysql-sequelize/entities/user-privilege.entity';
+import { UserPrivilege } from 'src/modules/user-privilege/adapters/out/mysql-sequelize/entities/user-privilege.entity';
 
 @Table({ tableName: 'privilege', modelName: 'privilege' })
 export class PrivilegeEntity extends Model implements Privilege {
@@ -28,11 +28,11 @@ export class PrivilegeEntity extends Model implements Privilege {
   })
   name: string;
 
-  @Column({ type: DataType.DATE })
+  @Column({ type: DataType.DATE, allowNull: false })
   @CreatedAt
   createdAt: Date;
 
-  @Column({ type: DataType.DATE })
+  @Column({ type: DataType.DATE, allowNull: false })
   @UpdatedAt
   updatedAt: Date;
 
