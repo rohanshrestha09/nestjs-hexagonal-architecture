@@ -17,16 +17,19 @@ import { CreatePrivilegeUseCase } from 'src/modules/privilege/application/usecas
 import { GetPrivilegeUseCase } from 'src/modules/privilege/application/usecases/get-privilege.usecase';
 import { CreatePrivilegeDto } from 'src/modules/privilege/application/dto/create-privilege.dto';
 import { QueryPrivilegeDto } from 'src/modules/privilege/application/dto/query-privilege.dto';
+import { PrivilegeControllerPort } from 'src/modules/privilege/ports/in/privilege-controller.port';
 
 @ApiBearerAuth()
 @ApiTags('privilege')
 @Roles(ROLE.ADMIN)
 @Controller('privilege')
-export class PrivilegeController {
+export class PrivilegeController extends PrivilegeControllerPort {
   constructor(
     private readonly createPrivilegeUseCase: CreatePrivilegeUseCase,
     private readonly getPrivilegeUseCase: GetPrivilegeUseCase,
-  ) {}
+  ) {
+    super();
+  }
 
   @Post()
   @ApiOperation({ summary: 'create privilege' })

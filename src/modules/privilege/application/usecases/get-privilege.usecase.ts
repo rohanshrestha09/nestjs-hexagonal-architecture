@@ -1,24 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { PrivilegeDAO } from '../dao/privilege.dao';
 import { QueryPrivilegeDto } from '../dto/query-privilege.dto';
+import { PrivilegeRepositoryPort } from '../../ports/out/privilege-repository.port';
 
 @Injectable()
 export class GetPrivilegeUseCase {
-  constructor(private privilegeDAO: PrivilegeDAO) {}
+  constructor(private privilegeRepositoryPort: PrivilegeRepositoryPort) {}
 
   async getPrivilegeById(id: number) {
-    return await this.privilegeDAO.findPrivilegeById(id);
+    return await this.privilegeRepositoryPort.findPrivilegeById(id);
   }
 
   async getPrivilegeByName(name: string) {
-    return await this.privilegeDAO.findPrivilegeByName(name);
+    return await this.privilegeRepositoryPort.findPrivilegeByName(name);
   }
 
   async getAllPrivileges(queryPrivilegeDto: QueryPrivilegeDto) {
-    return await this.privilegeDAO.findAllPrivileges(queryPrivilegeDto);
+    return await this.privilegeRepositoryPort.findAllPrivileges(
+      queryPrivilegeDto,
+    );
   }
 
   async getAllPrivilegeByNames(names: string[]) {
-    return await this.privilegeDAO.findAllPrivilegeByNames(names);
+    return await this.privilegeRepositoryPort.findAllPrivilegeByNames(names);
   }
 }

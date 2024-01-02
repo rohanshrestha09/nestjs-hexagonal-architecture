@@ -1,98 +1,63 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Optional, OrderItem } from 'sequelize';
 import { TransactionEntity } from '../entities/transaction.entity';
-import { BaseRepository } from 'src/base/repository/base.repository';
-import {
-  FindManyOptions,
-  FindOneOptions,
-  FindOptionsWhere,
-  DeepPartial,
-  QueryDeepPartialEntity,
-} from 'src/base/repository/base.repository.type';
+import { TransactionRepositoryPort } from 'src/modules/transaction/ports/out/transaction-repository.port';
+import { TransactionMapper } from 'src/modules/transaction/infrastructure/mapper/transaction.mapper';
+import { CreateTransactionDto } from 'src/modules/transaction/application/dto/create-transaction.dto';
+import { UpdateTransactionDto } from 'src/modules/transaction/application/dto/update-transaction.dto';
 
 @Injectable()
-export class TransactionRepository
-  implements BaseRepository<TransactionEntity>
-{
+export class TransactionRepository extends TransactionRepositoryPort {
   constructor(
     @InjectModel(TransactionEntity)
     private transactionRepository: typeof TransactionEntity,
-  ) {}
-
-  async findOneOrThrow(options: FindOneOptions<TransactionEntity>) {
-    const result = await this.transactionRepository.findOne({
-      where: options?.where,
-      include:
-        options?.relations &&
-        Object.entries(options?.relations).map(([k, v]) => v && k),
-      attributes: options?.select && Object.keys(options?.select),
-    });
-
-    if (!result) throw new Error('Transaction not found');
-
-    return result;
-  }
-
-  async findOne(options?: FindOneOptions<TransactionEntity>) {
-    return await this.transactionRepository.findOne({
-      where: options?.where,
-      include:
-        options?.relations &&
-        Object.entries(options?.relations).map(([k, v]) => v && k),
-      attributes: options?.select && Object.keys(options?.select),
-    });
-  }
-
-  async findMany(options?: FindManyOptions<TransactionEntity>) {
-    const findRecurranceOrder = (order: object) => {
-      const orderItem = [] as OrderItem[];
-
-      Object.entries(order).forEach(([k, v]) => {
-        if (typeof v === 'string') orderItem.push([k, v]);
-
-        if (typeof v === 'object')
-          Object.entries(v).forEach(([k1, v1]) => {
-            if (typeof v1 === 'string') orderItem.push([k, k1, v1]);
-          });
-      });
-
-      return orderItem;
-    };
-
-    return await this.transactionRepository.findAll({
-      where: options?.where,
-      include:
-        options?.relations &&
-        Object.entries(options?.relations).map(([k, v]) => v && k),
-      offset: options?.skip,
-      limit: options?.take,
-      attributes: options?.select && Object.keys(options?.select),
-      order: options?.order && findRecurranceOrder(options?.order),
-    });
-  }
-
-  async create(data: DeepPartial<TransactionEntity>) {
-    return await this.transactionRepository.create(
-      data as Optional<any, string | number>,
-    );
-  }
-
-  async update(
-    criteria: FindOptionsWhere<TransactionEntity>,
-    data: QueryDeepPartialEntity<TransactionEntity>,
   ) {
-    await this.transactionRepository.update(data, {
-      where: criteria?.where,
-      returning: true,
+    super();
+  }
+
+  async findTransactionById(transactionId: number) {
+    const transaction = await this.transactionRepository.findByPk(
+      transactionId,
+      { rejectOnEmpty: true },
+    );
+
+    return TransactionMapper.toDomain(transaction);
+  }
+
+  async findUserTransactionById({
+    userId,
+    transactionId,
+  }: {
+    userId: string;
+    transactionId: number;
+  }) {
+    const transaction = await this.transactionRepository.findOne({
+      where: {
+        id: transactionId,
+        userId,
+      },
+      rejectOnEmpty: true,
     });
+
+    return TransactionMapper.toDomain(transaction);
   }
 
-  async delete(criteria: FindOptionsWhere<TransactionEntity>) {
-    await this.transactionRepository.destroy(criteria);
+  async createTransaction(createTransactionDto: CreateTransactionDto) {
+    const transaction = await this.transactionRepository.create({
+      ...createTransactionDto,
+    });
+
+    return TransactionMapper.toDomain(transaction);
   }
 
-  async count(criteria?: FindManyOptions<TransactionEntity>) {
-    return this.transactionRepository.count(criteria);
+  async updateTransaction(
+    transactionId: number,
+    updateTransactionDto: UpdateTransactionDto,
+  ) {
+    await this.transactionRepository.update(updateTransactionDto, {
+      where: {
+        id: transactionId,
+      },
+    });
   }
 }

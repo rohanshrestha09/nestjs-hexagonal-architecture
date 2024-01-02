@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionDAO } from '../dao/transaction.dao';
 import { User } from 'src/modules/user/domain/user.domain';
-import { TRANSACTION_STATUS } from '../../infrastructure/enums/transaction.enum';
+import { TransactionRepositoryPort } from '../../ports/out/transaction-repository.port';
 import { KhaltiOnlinePaymentUseCase } from 'src/modules/online-payment/application/usecases/khalti-online-payment.usecase';
 import { KhaltiTransactionVerificationDto } from 'src/modules/online-payment/application/dto/khalti-online-payment.dto';
+import { TRANSACTION_STATUS } from '../../infrastructure/enums/transaction.enum';
 
 @Injectable()
 export class KhaltiTransactionUseCase {
   constructor(
-    private transactionDAO: TransactionDAO,
+    private transactionRepositoryPort: TransactionRepositoryPort,
     private khaltiOnlinePaymentUseCase: KhaltiOnlinePaymentUseCase,
   ) {}
 
@@ -17,10 +17,11 @@ export class KhaltiTransactionUseCase {
     user: User,
     verifyTransactionDto: KhaltiTransactionVerificationDto,
   ) {
-    const transaction = await this.transactionDAO.findUserTransactionById({
-      userId: user.id,
-      transactionId,
-    });
+    const transaction =
+      await this.transactionRepositoryPort.findUserTransactionById({
+        userId: user.id,
+        transactionId,
+      });
 
     await this.khaltiOnlinePaymentUseCase.verify(
       {
@@ -30,7 +31,7 @@ export class KhaltiTransactionUseCase {
       verifyTransactionDto,
     );
 
-    return this.transactionDAO.updateTransaction(transaction.id, {
+    return this.transactionRepositoryPort.updateTransaction(transaction.id, {
       status: TRANSACTION_STATUS.SUCCESS,
     });
   }

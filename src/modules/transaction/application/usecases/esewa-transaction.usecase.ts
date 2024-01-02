@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionDAO } from '../dao/transaction.dao';
+import { TransactionRepositoryPort } from '../../ports/out/transaction-repository.port';
 import { User } from 'src/modules/user/domain/user.domain';
 import { TRANSACTION_STATUS } from '../../infrastructure/enums/transaction.enum';
 import { EsewaOnlinePaymentUseCase } from 'src/modules/online-payment/application/usecases/esewa-online-payment.usecase';
@@ -8,7 +8,7 @@ import { EsewaTransactionVerificationDto } from 'src/modules/online-payment/appl
 @Injectable()
 export class EsewaTransactionUseCase {
   constructor(
-    private transactionDAO: TransactionDAO,
+    private transactionRepositoryPort: TransactionRepositoryPort,
     private esewaOnlinePaymentUseCase: EsewaOnlinePaymentUseCase,
   ) {}
 
@@ -17,10 +17,11 @@ export class EsewaTransactionUseCase {
     user: User,
     verifyTransactionDto: EsewaTransactionVerificationDto,
   ) {
-    const transaction = await this.transactionDAO.findUserTransactionById({
-      userId: user.id,
-      transactionId,
-    });
+    const transaction =
+      await this.transactionRepositoryPort.findUserTransactionById({
+        userId: user.id,
+        transactionId,
+      });
 
     const res = await this.esewaOnlinePaymentUseCase.verify(
       {
@@ -30,7 +31,7 @@ export class EsewaTransactionUseCase {
       verifyTransactionDto,
     );
 
-    return this.transactionDAO.updateTransaction(transaction.id, {
+    return this.transactionRepositoryPort.updateTransaction(transaction.id, {
       status: TRANSACTION_STATUS.SUCCESS,
       paymentProviderId: res?.refId,
     });

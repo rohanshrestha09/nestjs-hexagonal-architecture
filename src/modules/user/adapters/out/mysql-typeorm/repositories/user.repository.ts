@@ -2,50 +2,59 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { BaseRepository } from 'src/base/repository/base.repository';
 import {
-  FindManyOptions,
-  FindOneOptions,
-  FindOptionsWhere,
-  DeepPartial,
-  QueryDeepPartialEntity,
-} from 'src/base/repository/base.repository.type';
+  UserConfig,
+  UserRepositoryPort,
+} from 'src/modules/user/ports/out/user-repository.port';
+import { UserMapper } from 'src/modules/user/infrastructure/mapper/user.mapper';
+import { CreateUserDto } from 'src/modules/user/application/dto/create-user.dto';
+import { mapArrayToObject } from 'src/utils/mapper';
 
 @Injectable()
-export class UserRepository implements BaseRepository<UserEntity> {
+export class UserRepository implements UserRepositoryPort {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async findOneOrThrow(options: FindOneOptions<UserEntity>) {
-    return await this.userRepository.findOneOrFail(options);
+  async findUserPassword(userId: string) {
+    const user = await this.userRepository.findOneOrFail({
+      where: { id: userId },
+      select: { password: true },
+    });
+
+    return user.password;
   }
 
-  async findOne(options?: FindOneOptions<UserEntity>) {
-    return await this.userRepository.findOne(options);
+  async findUserById(userId: string, config: UserConfig) {
+    const user = await this.userRepository.findOneOrFail({
+      where: { id: userId },
+      select: config?.select && mapArrayToObject(config.select, true),
+      relations: config?.relations && mapArrayToObject(config.relations, true),
+    });
+
+    return UserMapper.toDomain(user);
   }
 
-  async findMany(options?: FindManyOptions<UserEntity>) {
-    return await this.userRepository.find(options);
+  async findUserByEmail(email: string, config: UserConfig) {
+    const user = await this.userRepository.findOneOrFail({
+      where: {
+        email,
+      },
+      select: config?.select && mapArrayToObject(config.select, true),
+      relations: config?.relations && mapArrayToObject(config.relations, true),
+    });
+
+    if (!user) throw new Error('User not found');
+
+    return user;
   }
 
-  async create(data: DeepPartial<UserEntity>) {
-    return await this.userRepository.save(this.userRepository.create(data));
-  }
+  async createUser(createUserDto: CreateUserDto) {
+    const user = await this.userRepository.save(
+      this.userRepository.create({ ...createUserDto }),
+    );
 
-  async update(
-    criteria: FindOptionsWhere<UserEntity>,
-    data: QueryDeepPartialEntity<UserEntity>,
-  ) {
-    await this.userRepository.update(criteria, data);
-  }
-
-  async delete(criteria: FindOptionsWhere<UserEntity>) {
-    await this.userRepository.delete(criteria);
-  }
-
-  async count(criteria?: FindManyOptions<UserEntity>) {
-    return this.userRepository.count(criteria);
+    return UserMapper.toDomain(user);
   }
 }

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionDAO } from '../dao/transaction.dao';
 import { UpdateTransactionDto } from '../dto/update-transaction.dto';
+import { TransactionRepositoryPort } from '../../ports/out/transaction-repository.port';
 
 @Injectable()
 export class UpdateTransactionUseCase {
-  constructor(private transactionDAO: TransactionDAO) {}
+  constructor(private transactionRepositoryPort: TransactionRepositoryPort) {}
 
   async updateTransaction(
     transactionId: number,
     updateTransactionDto: UpdateTransactionDto,
   ) {
-    await this.transactionDAO.updateTransaction(
+    await this.transactionRepositoryPort.updateTransaction(
       transactionId,
       updateTransactionDto,
     );

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { UserDAO } from '../dao/user.dao';
+import { UserRepositoryPort } from '../../ports/out/user-repository.port';
 
 @Injectable()
 export class CheckUserUseCase {
-  constructor(private userDAO: UserDAO) {}
+  constructor(private userRepositoryPort: UserRepositoryPort) {}
 
   async userExists(email: string) {
-    const userExists = await this.userDAO.findUserByEmail(email, {});
+    const userExists = await this.userRepositoryPort.findUserByEmail(email, {});
 
     return !!userExists;
   }

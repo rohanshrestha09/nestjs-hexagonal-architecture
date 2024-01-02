@@ -1,21 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionDAO } from '../dao/transaction.dao';
+import { TransactionRepositoryPort } from '../../ports/out/transaction-repository.port';
 import { CreateTransactionDto } from '../dto/create-transaction.dto';
-import { PAYMENT_PROVIDER } from 'src/modules/online-payment/infrastructure/enums/online-payment.enum';
 import { EsewaOnlinePaymentUseCase } from 'src/modules/online-payment/application/usecases/esewa-online-payment.usecase';
 import { KhaltiOnlinePaymentUseCase } from 'src/modules/online-payment/application/usecases/khalti-online-payment.usecase';
+import { PAYMENT_PROVIDER } from 'src/modules/online-payment/infrastructure/enums/online-payment.enum';
 
 @Injectable()
 export class CreateTransactionUseCase {
   constructor(
-    private transactionDAO: TransactionDAO,
+    private transactionRepositoryPort: TransactionRepositoryPort,
     private esewaOnlinePaymentUseCase: EsewaOnlinePaymentUseCase,
     private khaltiOnlinePaymentUseCase: KhaltiOnlinePaymentUseCase,
   ) {}
 
   async createTransaction(createTransactionDto: CreateTransactionDto) {
     const transaction =
-      await this.transactionDAO.createTransaction(createTransactionDto);
+      await this.transactionRepositoryPort.createTransaction(
+        createTransactionDto,
+      );
 
     const onlinePaymentFactory = (paymentProvider: PAYMENT_PROVIDER) => {
       switch (paymentProvider) {

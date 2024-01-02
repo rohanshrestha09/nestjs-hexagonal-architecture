@@ -6,11 +6,8 @@ import { RoleEntity } from './adapters/out/mysql-sequelize/entities/role.entity'
 import { RoleController } from './adapters/in/web/role.controller';
 // import { RoleRepository } from './adapters/out/mysql-typeorm/repositories/role.repository';
 import { RoleRepository } from './adapters/out/mysql-sequelize/repositories/role.repository';
-import { RoleDAO } from './application/dao/role.dao';
-import { RoleDAOAdapter } from './adapters/out/role-dao.adapter';
 import { GetRoleUseCase } from './application/usecases/get-role.usecase';
-import { BaseRepository } from 'src/base/repository/base.repository';
-import { Role } from './domain/role.domain';
+import { RoleRepositoryPort } from './ports/out/role-repository.port';
 
 @Global()
 @Module({
@@ -22,12 +19,8 @@ import { Role } from './domain/role.domain';
   providers: [
     GetRoleUseCase,
     {
-      provide: BaseRepository<Role>,
+      provide: RoleRepositoryPort,
       useClass: RoleRepository,
-    },
-    {
-      provide: RoleDAO,
-      useClass: RoleDAOAdapter,
     },
   ],
   exports: [GetRoleUseCase],

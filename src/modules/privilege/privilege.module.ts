@@ -6,12 +6,9 @@ import { PrivilegeEntity } from './adapters/out/mysql-sequelize/entities/privile
 import { PrivilegeController } from './adapters/in/web/privilege.controller';
 // import { PrivilegeRepository } from './adapters/out/mysql-typeorm/repositories/privilege.repository';
 import { PrivilegeRepository } from './adapters/out/mysql-sequelize/repositories/privilege.repository';
-import { PrivilegeDAO } from './application/dao/privilege.dao';
-import { PrivilegeDAOAdapter } from './adapters/out/privilege-dao.adapter';
 import { CreatePrivilegeUseCase } from './application/usecases/create-privilege.usecase';
 import { GetPrivilegeUseCase } from './application/usecases/get-privilege.usecase';
-import { BaseRepository } from 'src/base/repository/base.repository';
-import { Privilege } from './domain/privilege.domain';
+import { PrivilegeRepositoryPort } from './ports/out/privilege-repository.port';
 
 @Global()
 @Module({
@@ -25,12 +22,8 @@ import { Privilege } from './domain/privilege.domain';
     CreatePrivilegeUseCase,
     GetPrivilegeUseCase,
     {
-      provide: BaseRepository<Privilege>,
+      provide: PrivilegeRepositoryPort,
       useClass: PrivilegeRepository,
-    },
-    {
-      provide: PrivilegeDAO,
-      useClass: PrivilegeDAOAdapter,
     },
   ],
   exports: [CreatePrivilegeUseCase, GetPrivilegeUseCase],

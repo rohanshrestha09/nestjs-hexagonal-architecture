@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     try {
       const user = await this.getUserUseCase.getUserByEmail(payload?.email, {
-        relations: { role: true },
+        relations: ['role'],
       });
 
       return user;

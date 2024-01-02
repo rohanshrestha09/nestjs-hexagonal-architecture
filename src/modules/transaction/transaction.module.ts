@@ -6,16 +6,13 @@ import { TransactionEntity } from './adapters/out/mysql-sequelize/entities/trans
 import { TransactionController } from './adapters/in/web/transaction.controller';
 // import { TransactionRepository } from './adapters/out/mysql-typeorm/repositories/transaction.repository';
 import { TransactionRepository } from './adapters/out/mysql-sequelize/repositories/transaction.repository';
-import { TransactionDAO } from './application/dao/transaction.dao';
-import { TransactionDAOAdapter } from './adapters/out/transaction-dao.adapter';
 import { OnlinePaymentModule } from '../online-payment/online-payment.module';
 import { CreateTransactionUseCase } from './application/usecases/create-transaction.usecase';
 import { GetTransactionUseCase } from './application/usecases/get-transaction.usecase';
 import { UpdateTransactionUseCase } from './application/usecases/update-transaction.usecase';
 import { KhaltiTransactionUseCase } from './application/usecases/khalti-transaction.usecase';
 import { EsewaTransactionUseCase } from './application/usecases/esewa-transaction.usecase';
-import { BaseRepository } from 'src/base/repository/base.repository';
-import { Transaction } from './domain/transaction.domain';
+import { TransactionRepositoryPort } from './ports/out/transaction-repository.port';
 
 @Module({
   imports: [
@@ -31,12 +28,8 @@ import { Transaction } from './domain/transaction.domain';
     KhaltiTransactionUseCase,
     EsewaTransactionUseCase,
     {
-      provide: BaseRepository<Transaction>,
+      provide: TransactionRepositoryPort,
       useClass: TransactionRepository,
-    },
-    {
-      provide: TransactionDAO,
-      useClass: TransactionDAOAdapter,
     },
   ],
   exports: [

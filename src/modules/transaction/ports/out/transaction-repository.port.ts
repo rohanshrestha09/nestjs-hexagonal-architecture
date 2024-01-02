@@ -1,8 +1,8 @@
 import { Transaction } from '../../domain/transaction.domain';
-import { CreateTransactionDto } from '../dto/create-transaction.dto';
-import { UpdateTransactionDto } from '../dto/update-transaction.dto';
+import { CreateTransactionDto } from '../../application/dto/create-transaction.dto';
+import { UpdateTransactionDto } from '../../application/dto/update-transaction.dto';
 
-export abstract class TransactionDAO {
+export abstract class TransactionRepositoryPort {
   abstract findUserTransactionById({
     userId,
     transactionId,

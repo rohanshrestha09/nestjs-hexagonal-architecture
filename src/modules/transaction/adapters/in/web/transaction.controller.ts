@@ -17,15 +17,18 @@ import { EsewaTransactionUseCase } from 'src/modules/transaction/application/use
 import { KhaltiTransactionUseCase } from 'src/modules/transaction/application/usecases/khalti-transaction.usecase';
 import { EsewaTransactionVerificationDto } from 'src/modules/online-payment/application/dto/esewa-online-payment.dto';
 import { KhaltiTransactionVerificationDto } from 'src/modules/online-payment/application/dto/khalti-online-payment.dto';
+import { TransactionControllerPort } from 'src/modules/transaction/ports/in/transaction-controller.port';
 
 @ApiTags('transaction')
 @Controller('transaction')
-export class TransactionController {
+export class TransactionController extends TransactionControllerPort {
   constructor(
     private readonly createTransactionUseCase: CreateTransactionUseCase,
     private readonly esewaTransactionUseCase: EsewaTransactionUseCase,
     private readonly khaltiTransactionUseCase: KhaltiTransactionUseCase,
-  ) {}
+  ) {
+    super();
+  }
 
   @ApiBearerAuth()
   @ApiBody({ type: CreateTransactionDto })

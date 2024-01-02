@@ -1,19 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { UserConfig, UserDAO } from '../dao/user.dao';
+import {
+  UserRepositoryPort,
+  UserConfig,
+} from '../../ports/out/user-repository.port';
 
 @Injectable()
 export class GetUserUseCase {
-  constructor(private userDAO: UserDAO) {}
+  constructor(private userRepositoryPort: UserRepositoryPort) {}
 
   async getUserById(userId: string, config: UserConfig) {
-    return await this.userDAO.findUserById(userId, config);
+    return await this.userRepositoryPort.findUserById(userId, config);
   }
 
   async getUserByEmail(email: string, config: UserConfig) {
-    return await this.userDAO.findUserByEmail(email, config);
+    return await this.userRepositoryPort.findUserByEmail(email, config);
   }
 
   async getUserPassword(userId: string) {
-    return this.userDAO.findUserPassword(userId);
+    return this.userRepositoryPort.findUserPassword(userId);
   }
 }

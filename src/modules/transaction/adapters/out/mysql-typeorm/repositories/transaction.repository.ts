@@ -2,54 +2,60 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TransactionEntity } from '../entities/transaction.entity';
-import { BaseRepository } from 'src/base/repository/base.repository';
-import {
-  FindManyOptions,
-  FindOneOptions,
-  FindOptionsWhere,
-  DeepPartial,
-  QueryDeepPartialEntity,
-} from 'src/base/repository/base.repository.type';
+import { TransactionRepositoryPort } from 'src/modules/transaction/ports/out/transaction-repository.port';
+import { CreateTransactionDto } from 'src/modules/transaction/application/dto/create-transaction.dto';
+import { UpdateTransactionDto } from 'src/modules/transaction/application/dto/update-transaction.dto';
+import { TransactionMapper } from 'src/modules/transaction/infrastructure/mapper/transaction.mapper';
 
 @Injectable()
-export class TransactionRepository
-  implements BaseRepository<TransactionEntity>
-{
+export class TransactionRepository extends TransactionRepositoryPort {
   constructor(
     @InjectRepository(TransactionEntity)
     private transactionRepository: Repository<TransactionEntity>,
-  ) {}
-
-  async findOneOrThrow(options: FindOneOptions<TransactionEntity>) {
-    return await this.transactionRepository.findOneOrFail(options);
-  }
-
-  async findOne(options?: FindOneOptions<TransactionEntity>) {
-    return await this.transactionRepository.findOne(options);
-  }
-
-  async findMany(options?: FindManyOptions<TransactionEntity>) {
-    return await this.transactionRepository.find(options);
-  }
-
-  async create(data: DeepPartial<TransactionEntity>) {
-    return await this.transactionRepository.save(
-      this.transactionRepository.create(data),
-    );
-  }
-
-  async update(
-    criteria: FindOptionsWhere<TransactionEntity>,
-    data: QueryDeepPartialEntity<TransactionEntity>,
   ) {
-    await this.transactionRepository.update(criteria, data);
+    super();
   }
 
-  async delete(criteria: FindOptionsWhere<TransactionEntity>) {
-    await this.transactionRepository.delete(criteria);
+  async findTransactionById(transactionId: number) {
+    const transaction = await this.transactionRepository.findOneOrFail({
+      where: { id: transactionId },
+    });
+
+    return TransactionMapper.toDomain(transaction);
   }
 
-  async count() {
-    return this.transactionRepository.count();
+  async findUserTransactionById({
+    userId,
+    transactionId,
+  }: {
+    userId: string;
+    transactionId: number;
+  }) {
+    const transaction = await this.transactionRepository.findOneOrFail({
+      where: {
+        id: transactionId,
+        userId,
+      },
+    });
+
+    return TransactionMapper.toDomain(transaction);
+  }
+
+  async createTransaction(createTransactionDto: CreateTransactionDto) {
+    const transaction = await this.transactionRepository.save(
+      this.transactionRepository.create({ ...createTransactionDto }),
+    );
+
+    return TransactionMapper.toDomain(transaction);
+  }
+
+  async updateTransaction(
+    transactionId: number,
+    updateTransactionDto: UpdateTransactionDto,
+  ) {
+    await this.transactionRepository.update(
+      { id: transactionId },
+      updateTransactionDto,
+    );
   }
 }

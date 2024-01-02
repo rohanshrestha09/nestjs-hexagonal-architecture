@@ -1,17 +1,12 @@
+import { CreateUserDto } from '../../application/dto/create-user.dto';
 import { User } from '../../domain/user.domain';
-import { CreateUserDto } from '../dto/create-user.dto';
 
 export type UserConfig = {
-  select?: {
-    password: boolean;
-  };
-  relations?: {
-    role?: boolean;
-    todos?: boolean;
-  };
+  select?: (keyof User)[];
+  relations?: ['role'];
 };
 
-export abstract class UserDAO {
+export abstract class UserRepositoryPort {
   abstract findUserPassword(userId: string): Promise<string>;
   abstract findUserById(userId: string, config: UserConfig): Promise<User>;
   abstract findUserByEmail(

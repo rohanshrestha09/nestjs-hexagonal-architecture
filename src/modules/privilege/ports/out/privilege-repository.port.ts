@@ -1,8 +1,8 @@
 import { Privilege } from '../../domain/privilege.domain';
-import { CreatePrivilegeDto } from '../dto/create-privilege.dto';
-import { QueryPrivilegeDto } from '../dto/query-privilege.dto';
+import { CreatePrivilegeDto } from '../../application/dto/create-privilege.dto';
+import { QueryPrivilegeDto } from '../../application/dto/query-privilege.dto';
 
-export abstract class PrivilegeDAO {
+export abstract class PrivilegeRepositoryPort {
   abstract findPrivilegeById(id: number): Promise<Privilege>;
   abstract findPrivilegeByName(name: string): Promise<Privilege>;
   abstract findAllPrivileges(
