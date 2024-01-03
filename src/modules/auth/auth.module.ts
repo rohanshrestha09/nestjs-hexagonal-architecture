@@ -30,6 +30,5 @@ import { AllConfig } from 'src/config/config.type';
   ],
   controllers: [AuthController],
   providers: [LoginUseCase, RegisterUseCase, JwtStrategy],
-  exports: [LoginUseCase, RegisterUseCase],
 })
 export class AuthModule {}

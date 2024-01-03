@@ -23,6 +23,6 @@ import { RoleRepositoryPort } from './ports/out/role-repository.port';
       useClass: RoleRepository,
     },
   ],
-  exports: [GetRoleUseCase],
+  exports: [RoleRepositoryPort],
 })
 export class RoleModule {}

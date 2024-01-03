@@ -27,6 +27,6 @@ import { UserRepositoryPort } from './ports/out/user-repository.port';
       useClass: UserRepository,
     },
   ],
-  exports: [CreateUserUseCase, GetUserUseCase, CheckUserUseCase],
+  exports: [UserRepositoryPort],
 })
 export class UserModule {}

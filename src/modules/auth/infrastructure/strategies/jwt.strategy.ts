@@ -2,13 +2,13 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { GetUserUseCase } from 'src/modules/user/application/usecases/get-user.usecase';
+import { UserRepositoryPort } from 'src/modules/user/ports/out/user-repository.port';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private getUserUseCase: GetUserUseCase,
     private configService: ConfigService,
+    private userRepositoryPort: UserRepositoryPort,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -19,9 +19,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     try {
-      const user = await this.getUserUseCase.getUserByEmail(payload?.email, {
-        relations: ['role'],
-      });
+      const user = await this.userRepositoryPort.findUserByEmail(
+        payload?.email,
+        {
+          relations: ['role'],
+        },
+      );
 
       return user;
     } catch {

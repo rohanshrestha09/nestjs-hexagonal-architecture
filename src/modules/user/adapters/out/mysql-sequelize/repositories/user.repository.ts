@@ -53,4 +53,10 @@ export class UserRepository extends UserRepositoryPort {
 
     return UserMapper.toDomain(user);
   }
+
+  async userExists(email: string) {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    return !!user;
+  }
 }

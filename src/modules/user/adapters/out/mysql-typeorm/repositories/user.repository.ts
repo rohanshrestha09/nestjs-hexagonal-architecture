@@ -57,4 +57,8 @@ export class UserRepository implements UserRepositoryPort {
 
     return UserMapper.toDomain(user);
   }
+
+  async userExists(email: string) {
+    return await this.userRepository.exist({ where: { email } });
+  }
 }

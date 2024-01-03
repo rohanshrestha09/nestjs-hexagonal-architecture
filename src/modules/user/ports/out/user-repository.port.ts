@@ -14,4 +14,5 @@ export abstract class UserRepositoryPort {
     config: UserConfig,
   ): Promise<User | null>;
   abstract createUser(createUserDto: CreateUserDto): Promise<User>;
+  abstract userExists(email: string): Promise<boolean>;
 }

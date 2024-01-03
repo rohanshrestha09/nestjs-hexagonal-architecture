@@ -32,12 +32,6 @@ import { TransactionRepositoryPort } from './ports/out/transaction-repository.po
       useClass: TransactionRepository,
     },
   ],
-  exports: [
-    CreateTransactionUseCase,
-    GetTransactionUseCase,
-    UpdateTransactionUseCase,
-    KhaltiTransactionUseCase,
-    EsewaTransactionUseCase,
-  ],
+  exports: [TransactionRepositoryPort],
 })
 export class TransactionModule {}

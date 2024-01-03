@@ -26,6 +26,6 @@ import { PrivilegeRepositoryPort } from './ports/out/privilege-repository.port';
       useClass: PrivilegeRepository,
     },
   ],
-  exports: [CreatePrivilegeUseCase, GetPrivilegeUseCase],
+  exports: [PrivilegeRepositoryPort],
 })
 export class PrivilegeModule {}
