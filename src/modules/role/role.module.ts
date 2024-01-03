@@ -1,26 +1,20 @@
 import { Global, Module } from '@nestjs/common';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-import { SequelizeModule } from '@nestjs/sequelize';
-// import { RoleEntity } from './adapters/out/mysql-typeorm/entities/role.entity';
-import { RoleEntity } from './adapters/out/mysql-sequelize/entities/role.entity';
-import { RoleController } from './adapters/in/web/role.controller';
-// import { RoleRepository } from './adapters/out/mysql-typeorm/repositories/role.repository';
-import { RoleRepository } from './adapters/out/mysql-sequelize/repositories/role.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RoleController } from './adapters/primary/web/role.controller';
 import { GetRoleUseCase } from './application/usecases/get-role.usecase';
 import { RoleRepositoryPort } from './ports/out/role-repository.port';
+import { MySQLTypeORMRoleEntity } from './adapters/secondary/mysql-typeorm/role-mysql-typeorm.entity';
+import { MySQLTypeORMRoleRepository } from './adapters/secondary/mysql-typeorm/role-mysql-typeorm.repository';
 
 @Global()
 @Module({
-  imports: [
-    // TypeOrmModule.forFeature([RoleEntity]),
-    SequelizeModule.forFeature([RoleEntity]),
-  ],
+  imports: [TypeOrmModule.forFeature([MySQLTypeORMRoleEntity])],
   controllers: [RoleController],
   providers: [
     GetRoleUseCase,
     {
       provide: RoleRepositoryPort,
-      useClass: RoleRepository,
+      useClass: MySQLTypeORMRoleRepository,
     },
   ],
   exports: [RoleRepositoryPort],

@@ -1,11 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { TransactionEntity } from './adapters/out/mysql-typeorm/entities/transaction.entity';
-import { TransactionEntity } from './adapters/out/mysql-sequelize/entities/transaction.entity';
-import { TransactionController } from './adapters/in/web/transaction.controller';
-// import { TransactionRepository } from './adapters/out/mysql-typeorm/repositories/transaction.repository';
-import { TransactionRepository } from './adapters/out/mysql-sequelize/repositories/transaction.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TransactionController } from './adapters/primary/web/transaction.controller';
 import { OnlinePaymentModule } from '../online-payment/online-payment.module';
 import { CreateTransactionUseCase } from './application/usecases/create-transaction.usecase';
 import { GetTransactionUseCase } from './application/usecases/get-transaction.usecase';
@@ -13,11 +8,11 @@ import { UpdateTransactionUseCase } from './application/usecases/update-transact
 import { KhaltiTransactionUseCase } from './application/usecases/khalti-transaction.usecase';
 import { EsewaTransactionUseCase } from './application/usecases/esewa-transaction.usecase';
 import { TransactionRepositoryPort } from './ports/out/transaction-repository.port';
+import { MySQLTypeORMTransactionEntity } from './adapters/secondary/mysql-typeorm/transaction-mysql-typeorm.entity';
 
 @Module({
   imports: [
-    // TypeOrmModule.forFeature([TransactionEntity]),
-    SequelizeModule.forFeature([TransactionEntity]),
+    TypeOrmModule.forFeature([MySQLTypeORMTransactionEntity]),
     OnlinePaymentModule,
   ],
   controllers: [TransactionController],
@@ -29,7 +24,7 @@ import { TransactionRepositoryPort } from './ports/out/transaction-repository.po
     EsewaTransactionUseCase,
     {
       provide: TransactionRepositoryPort,
-      useClass: TransactionRepository,
+      useClass: MySQLTypeORMTransactionEntity,
     },
   ],
   exports: [TransactionRepositoryPort],

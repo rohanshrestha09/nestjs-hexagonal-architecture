@@ -1,5 +1,4 @@
 import { Privilege } from '../../domain/privilege.domain';
-import { CreatePrivilegeDto } from '../../application/dto/create-privilege.dto';
 import { QueryPrivilegeDto } from '../../application/dto/query-privilege.dto';
 
 export abstract class PrivilegeRepositoryPort {
@@ -9,7 +8,5 @@ export abstract class PrivilegeRepositoryPort {
     queryPrivilegeDto: QueryPrivilegeDto,
   ): Promise<[Privilege[], number]>;
   abstract findAllPrivilegeByNames(names?: string[]): Promise<Privilege[]>;
-  abstract createPrivilege(
-    createPrivilegeDto: CreatePrivilegeDto,
-  ): Promise<Privilege>;
+  abstract createPrivilege(privilege: Privilege): Promise<Privilege>;
 }

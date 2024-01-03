@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionRepositoryPort } from '../../ports/out/transaction-repository.port';
-import { CreateTransactionDto } from '../dto/create-transaction.dto';
+import { Transaction } from '../../domain/transaction.domain';
 import { EsewaOnlinePaymentUseCase } from 'src/modules/online-payment/application/usecases/esewa-online-payment.usecase';
 import { KhaltiOnlinePaymentUseCase } from 'src/modules/online-payment/application/usecases/khalti-online-payment.usecase';
 import { PAYMENT_PROVIDER } from 'src/modules/online-payment/infrastructure/enums/online-payment.enum';
@@ -13,11 +13,9 @@ export class CreateTransactionUseCase {
     private khaltiOnlinePaymentUseCase: KhaltiOnlinePaymentUseCase,
   ) {}
 
-  async createTransaction(createTransactionDto: CreateTransactionDto) {
+  async createTransaction(createTransaction: Transaction) {
     const transaction =
-      await this.transactionRepositoryPort.createTransaction(
-        createTransactionDto,
-      );
+      await this.transactionRepositoryPort.createTransaction(createTransaction);
 
     const onlinePaymentFactory = (paymentProvider: PAYMENT_PROVIDER) => {
       switch (paymentProvider) {
@@ -29,9 +27,9 @@ export class CreateTransactionUseCase {
     };
 
     const response = await onlinePaymentFactory(
-      createTransactionDto.paymentProvider,
+      transaction.paymentProvider,
     ).init({
-      amount: createTransactionDto.amount,
+      amount: transaction.amount,
       transactionId: String(transaction.id),
       purchaseOrderName: 'Nice',
     });

@@ -6,7 +6,7 @@ export class CheckUserUseCase {
   constructor(private userRepositoryPort: UserRepositoryPort) {}
 
   async userExists(email: string) {
-    const userExists = await this.userRepositoryPort.findUserByEmail(email, {});
+    const userExists = await this.userRepositoryPort.findUserByEmail(email);
 
     return !!userExists;
   }

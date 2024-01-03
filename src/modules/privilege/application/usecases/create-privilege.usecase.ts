@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePrivilegeDto } from '../dto/create-privilege.dto';
 import { PrivilegeRepositoryPort } from '../../ports/out/privilege-repository.port';
+import { Privilege } from '../../domain/privilege.domain';
 
 @Injectable()
 export class CreatePrivilegeUseCase {
   constructor(private privilegeRepositoryPort: PrivilegeRepositoryPort) {}
 
-  async createPrivilege(createPrivilegeDto: CreatePrivilegeDto) {
-    return await this.privilegeRepositoryPort.createPrivilege(
-      createPrivilegeDto,
-    );
+  async createPrivilege(privilege: Privilege) {
+    return await this.privilegeRepositoryPort.createPrivilege(privilege);
   }
 }

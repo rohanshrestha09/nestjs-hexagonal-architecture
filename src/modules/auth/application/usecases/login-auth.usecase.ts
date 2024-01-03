@@ -12,7 +12,7 @@ export class LoginUseCase {
   ) {}
 
   async login({ email, password }: LoginDto) {
-    const user = await this.userRepositoryPort.findUserByEmail(email, {});
+    const user = await this.userRepositoryPort.findUserByEmail(email);
 
     if (!user) throw new UnauthorizedException('Unauthorized');
 

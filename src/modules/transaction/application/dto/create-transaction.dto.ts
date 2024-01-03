@@ -23,7 +23,4 @@ export class CreateTransactionDto {
 
   @ApiHideProperty()
   userId: string;
-
-  @ApiHideProperty()
-  todoId: string;
 }

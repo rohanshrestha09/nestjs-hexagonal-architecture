@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateTransactionDto } from '../dto/update-transaction.dto';
+import { Transaction } from '../../domain/transaction.domain';
 import { TransactionRepositoryPort } from '../../ports/out/transaction-repository.port';
 
 @Injectable()
@@ -8,11 +8,11 @@ export class UpdateTransactionUseCase {
 
   async updateTransaction(
     transactionId: number,
-    updateTransactionDto: UpdateTransactionDto,
+    transaction: Partial<Transaction>,
   ) {
     await this.transactionRepositoryPort.updateTransaction(
       transactionId,
-      updateTransactionDto,
+      transaction,
     );
   }
 }

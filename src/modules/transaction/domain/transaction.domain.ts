@@ -1,6 +1,11 @@
+import { plainToInstance } from 'class-transformer';
+import { User } from 'src/modules/user/domain/user.domain';
+import {
+  CreateTransactionProps,
+  UpdateTransactionProps,
+} from './transaction.types';
 import { PAYMENT_PROVIDER } from 'src/modules/online-payment/infrastructure/enums/online-payment.enum';
 import { TRANSACTION_STATUS } from '../infrastructure/enums/transaction.enum';
-import { User } from 'src/modules/user/domain/user.domain';
 
 export class Transaction {
   id: number;
@@ -16,31 +21,25 @@ export class Transaction {
   userId: string;
   user: User;
 
-  constructor({
-    id,
-    status,
-    paymentProvider,
-    remarks,
-    voucherImageLink,
-    paymentProviderId,
-    amount,
-    date,
-    createdAt,
-    updatedAt,
-    userId,
-    user,
-  }: Transaction) {
-    this.id = id;
-    this.status = status;
-    this.paymentProvider = paymentProvider;
-    this.remarks = remarks;
-    this.voucherImageLink = voucherImageLink;
-    this.paymentProviderId = paymentProviderId;
-    this.amount = amount;
-    this.date = date;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.userId = userId;
-    this.user = user;
+  public static create(createTransactionProps: CreateTransactionProps) {
+    return plainToInstance(Transaction, createTransactionProps, {
+      exposeUnsetFields: false,
+    });
+  }
+
+  public static update(updateTransactionProps: UpdateTransactionProps) {
+    return plainToInstance(Transaction, updateTransactionProps, {
+      exposeUnsetFields: false,
+    });
+  }
+
+  public static toDomain(transaction: Transaction) {
+    return plainToInstance(Transaction, transaction, {
+      exposeUnsetFields: false,
+    });
+  }
+
+  public static toDomains(transactions: Transaction[]) {
+    return transactions?.map((transaction) => this.toDomain(transaction));
   }
 }

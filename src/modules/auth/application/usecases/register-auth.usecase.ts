@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { RegisterDto } from '../dto/register-auth.dto';
 import { UserRepositoryPort } from 'src/modules/user/ports/out/user-repository.port';
 import { RoleRepositoryPort } from 'src/modules/role/ports/out/role-repository.port';
+import { User } from 'src/modules/user/domain/user.domain';
 import { ROLE } from 'src/modules/role/infrastructure/enums/role.enum';
 
 @Injectable()
@@ -28,12 +29,14 @@ export class RegisterUseCase {
 
     const role = await this.roleRepositoryPort.findRoleByName(ROLE.USER);
 
-    const user = await this.userRepositoryPort.createUser({
-      name,
-      email,
-      password: encryptedPassword,
-      roleId: role.id,
-    });
+    const user = await this.userRepositoryPort.createUser(
+      User.create({
+        name,
+        email,
+        password: encryptedPassword,
+        roleId: role.id,
+      }),
+    );
 
     const payload = { sub: user.id, email: user.email };
 
