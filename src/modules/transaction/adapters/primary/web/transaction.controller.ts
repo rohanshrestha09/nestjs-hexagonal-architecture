@@ -12,21 +12,15 @@ import { User } from 'src/modules/user/infrastructure/decorators/user.decorator'
 import { Transaction } from 'src/modules/transaction/domain/transaction.domain';
 import { ResponseDto } from 'src/utils/dto/response.dto';
 import { CreateTransactionDto } from 'src/modules/transaction/application/dto/create-transaction.dto';
-import { CreateTransactionUseCase } from 'src/modules/transaction/application/usecases/create-transaction.usecase';
-import { EsewaTransactionUseCase } from 'src/modules/transaction/application/usecases/esewa-transaction.usecase';
-import { KhaltiTransactionUseCase } from 'src/modules/transaction/application/usecases/khalti-transaction.usecase';
 import { EsewaTransactionVerificationDto } from 'src/modules/online-payment/application/dto/esewa-online-payment.dto';
 import { KhaltiTransactionVerificationDto } from 'src/modules/online-payment/application/dto/khalti-online-payment.dto';
+import { TransactionUseCasePort } from 'src/modules/transaction/ports/in/transaction-usecase.port';
 import { ROLE } from 'src/modules/role/infrastructure/enums/role.enum';
 
 @ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController {
-  constructor(
-    private readonly createTransactionUseCase: CreateTransactionUseCase,
-    private readonly esewaTransactionUseCase: EsewaTransactionUseCase,
-    private readonly khaltiTransactionUseCase: KhaltiTransactionUseCase,
-  ) {}
+  constructor(private readonly transactionUseCase: TransactionUseCasePort) {}
 
   @ApiBearerAuth()
   @ApiBody({ type: CreateTransactionDto })
@@ -36,7 +30,7 @@ export class TransactionController {
     @Body(new ValidationPipe())
     createTransactionDto: CreateTransactionDto,
   ) {
-    await this.createTransactionUseCase.createTransaction(
+    await this.transactionUseCase.createTransaction(
       Transaction.create({
         ...createTransactionDto,
         userId: user.id,
@@ -57,7 +51,7 @@ export class TransactionController {
     @Body(new ValidationPipe())
     verifyTransactionDto: EsewaTransactionVerificationDto,
   ) {
-    const res = await this.esewaTransactionUseCase.verifyEsewaTransaction(
+    const res = await this.transactionUseCase.verifyEsewaTransaction(
       transactionId,
       user,
       verifyTransactionDto,
@@ -77,7 +71,7 @@ export class TransactionController {
     @Body(new ValidationPipe())
     verifyTransactionDto: KhaltiTransactionVerificationDto,
   ) {
-    const res = await this.khaltiTransactionUseCase.verifyKhaltiTransaction(
+    const res = await this.transactionUseCase.verifyKhaltiTransaction(
       transactionId,
       user,
       verifyTransactionDto,

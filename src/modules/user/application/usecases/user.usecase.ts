@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '../../domain/user.domain';
+import { UserUseCasePort } from '../../ports/in/user-usecase.port';
 import { UserRepositoryPort } from '../../ports/out/user-repository.port';
 
 @Injectable()
-export class GetUserUseCase {
+export class UserUseCase implements UserUseCasePort {
   constructor(private userRepositoryPort: UserRepositoryPort) {}
 
   async getUserById(userId: string) {
@@ -13,7 +15,17 @@ export class GetUserUseCase {
     return await this.userRepositoryPort.findUserByEmail(email);
   }
 
-  async getUserPassword(userId: string) {
+  async getUserPasswordById(userId: string) {
     return this.userRepositoryPort.findUserPassword(userId);
+  }
+
+  async userExistsByEmail(email: string) {
+    const userExists = await this.userRepositoryPort.findUserByEmail(email);
+
+    return !!userExists;
+  }
+
+  async createUser(user: User) {
+    return await this.userRepositoryPort.createUser(user);
   }
 }
