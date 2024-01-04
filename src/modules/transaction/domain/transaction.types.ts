@@ -6,7 +6,6 @@ export type CreateTransactionProps = {
   remarks: string;
   voucherImageLink: string;
   amount: number;
-  date: Date;
   userId: string;
 };
 

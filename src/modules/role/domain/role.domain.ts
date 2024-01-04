@@ -2,6 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import { User } from 'src/modules/user/domain/user.domain';
 import { CreateRoleProps, UpdateRoleProps } from './role.types';
 import { ROLE } from '../infrastructure/enums/role.enum';
+import { z } from 'zod';
 
 export class Role {
   id: number;
@@ -11,11 +12,23 @@ export class Role {
   users: User[];
 
   public static create(createRoleProps: CreateRoleProps) {
-    return plainToInstance(Role, createRoleProps, { exposeUnsetFields: false });
+    const createRoleValidator = z.object({
+      name: z.nativeEnum(ROLE),
+    });
+
+    return plainToInstance(Role, createRoleValidator.parse(createRoleProps), {
+      exposeUnsetFields: false,
+    });
   }
 
   public static update(updateRoleProps: UpdateRoleProps) {
-    return plainToInstance(Role, updateRoleProps, { exposeUnsetFields: false });
+    const updateRoleValidator = z.object({
+      name: z.nativeEnum(ROLE).optional(),
+    });
+
+    return plainToInstance(Role, updateRoleValidator.parse(updateRoleProps), {
+      exposeUnsetFields: false,
+    });
   }
 
   public static toDomain(role: Role) {

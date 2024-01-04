@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { plainToInstance } from 'class-transformer';
 import { User } from 'src/modules/user/domain/user.domain';
 import {
@@ -22,15 +23,37 @@ export class Transaction {
   user: User;
 
   public static create(createTransactionProps: CreateTransactionProps) {
-    return plainToInstance(Transaction, createTransactionProps, {
-      exposeUnsetFields: false,
+    const createTransactionValidator = z.object({
+      paymentProvider: z.nativeEnum(PAYMENT_PROVIDER),
+      remarks: z.string(),
+      voucherImageLink: z.string(),
+      amount: z.number(),
+      date: z.date().optional(),
+      userId: z.string().uuid(),
     });
+
+    return plainToInstance(
+      Transaction,
+      createTransactionValidator.parse(createTransactionProps),
+      {
+        exposeUnsetFields: false,
+      },
+    );
   }
 
   public static update(updateTransactionProps: UpdateTransactionProps) {
-    return plainToInstance(Transaction, updateTransactionProps, {
-      exposeUnsetFields: false,
+    const updateTransactionValidator = z.object({
+      status: z.nativeEnum(TRANSACTION_STATUS).optional(),
+      paymentProviderId: z.string().optional(),
     });
+
+    return plainToInstance(
+      Transaction,
+      updateTransactionValidator.parse(updateTransactionProps),
+      {
+        exposeUnsetFields: false,
+      },
+    );
   }
 
   public static toDomain(transaction: Transaction) {

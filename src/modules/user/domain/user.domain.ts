@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { Exclude, plainToInstance } from 'class-transformer';
 import { Privilege } from 'src/modules/privilege/domain/privilege.domain';
 import { Role } from 'src/modules/role/domain/role.domain';
@@ -18,11 +19,27 @@ export class User {
   privileges: Privilege[];
 
   public static create(createUserProps: CreateUserProps) {
-    return plainToInstance(User, createUserProps, { exposeUnsetFields: false });
+    const createUserValidator = z.object({
+      name: z.string(),
+      email: z.string().email(),
+      password: z.string(),
+      roleId: z.number(),
+    });
+
+    return plainToInstance(User, createUserValidator.parse(createUserProps), {
+      exposeUnsetFields: false,
+    });
   }
 
   public static update(updateUserProps: UpdateUserProps) {
-    return plainToInstance(User, updateUserProps, { exposeUnsetFields: false });
+    const updateUserValidator = z.object({
+      name: z.string().optional(),
+      password: z.string().optional(),
+    });
+
+    return plainToInstance(User, updateUserValidator.parse(updateUserProps), {
+      exposeUnsetFields: false,
+    });
   }
 
   public static toDomain(user: User) {
