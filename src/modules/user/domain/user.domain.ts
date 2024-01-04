@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { Exclude, plainToInstance } from 'class-transformer';
 import { Privilege } from 'src/modules/privilege/domain/privilege.domain';
+import { Blog } from 'src/modules/blog/domain/blog.domain';
 import { Role } from 'src/modules/role/domain/role.domain';
 import { CreateUserProps, UpdateUserProps } from './user.types';
 
@@ -17,6 +18,7 @@ export class User {
   roleId: number;
   role: Role;
   privileges: Privilege[];
+  blogs: Blog[];
 
   public static create(createUserProps: CreateUserProps) {
     const createUserValidator = z.object({
@@ -43,7 +45,11 @@ export class User {
   }
 
   public static toDomain(user: User) {
-    return plainToInstance(User, user, { exposeUnsetFields: false });
+    return plainToInstance(
+      User,
+      { ...user, password: undefined },
+      { exposeUnsetFields: false },
+    );
   }
 
   public static toDomains(users: User[]) {

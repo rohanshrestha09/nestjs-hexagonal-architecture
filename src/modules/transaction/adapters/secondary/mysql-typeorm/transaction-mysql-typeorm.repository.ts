@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MySQLTypeORMTransactionEntity } from './transaction-mysql-typeorm.entity';
-import { TransactionRepositoryPort } from 'src/modules/transaction/ports/out/transaction-repository.port';
+import { TransactionRepository } from 'src/modules/transaction/ports/out/transaction-repository.port';
 import { Transaction } from 'src/modules/transaction/domain/transaction.domain';
 
 @Injectable()
-export class MySQLTypeORMTransactionRepository extends TransactionRepositoryPort {
+export class MySQLTypeORMTransactionRepositoryImpl extends TransactionRepository {
   constructor(
     @InjectRepository(MySQLTypeORMTransactionEntity)
     private transactionRepository: Repository<MySQLTypeORMTransactionEntity>,

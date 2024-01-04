@@ -5,6 +5,8 @@ export const User = createParamDecorator(
   (role: ROLE, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
 
-    return request[role.toLowerCase()] ?? request.user;
+    return request.user;
+
+    // return request[role?.toLowerCase()] ?? request.user;
   },
 );

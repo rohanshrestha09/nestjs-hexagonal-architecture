@@ -1,30 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionUseCasePort } from '../../ports/in/transaction-usecase.port';
-import { TransactionRepositoryPort } from '../../ports/out/transaction-repository.port';
 import { User } from 'src/modules/user/domain/user.domain';
 import { Transaction } from '../../domain/transaction.domain';
-import { OnlinePaymentUseCasePort } from 'src/modules/online-payment/ports/in/online-payment-usecase.port';
+import { OnlinePaymentUseCase } from 'src/modules/online-payment/ports/in/online-payment-usecase.port';
 import { EsewaTransactionVerificationDto } from 'src/modules/online-payment/application/dto/esewa-online-payment.dto';
 import { KhaltiTransactionVerificationDto } from 'src/modules/online-payment/application/dto/khalti-online-payment.dto';
+import { TransactionUseCase } from '../../ports/in/transaction-usecase.port';
+import { TransactionRepository } from '../../ports/out/transaction-repository.port';
 import { TRANSACTION_STATUS } from '../../infrastructure/enums/transaction.enum';
 import { PAYMENT_PROVIDER } from 'src/modules/online-payment/infrastructure/enums/online-payment.enum';
 
 @Injectable()
-export class TransactionUseCase implements TransactionUseCasePort {
+export class TransactionUseCaseImpl implements TransactionUseCase {
   constructor(
-    private readonly transactionRepositoryPort: TransactionRepositoryPort,
-    private readonly onlinePaymentUseCase: OnlinePaymentUseCasePort,
+    private readonly transactionRepository: TransactionRepository,
+    private readonly onlinePaymentUseCase: OnlinePaymentUseCase,
   ) {}
 
   async getTransactionById(transactionId: number) {
-    return await this.transactionRepositoryPort.findTransactionById(
-      transactionId,
-    );
+    return await this.transactionRepository.findTransactionById(transactionId);
   }
 
   async createTransaction(createTransaction: Transaction) {
     const transaction =
-      await this.transactionRepositoryPort.createTransaction(createTransaction);
+      await this.transactionRepository.createTransaction(createTransaction);
 
     const onlinePaymentFactory = (paymentProvider: PAYMENT_PROVIDER) => {
       switch (paymentProvider) {
@@ -48,7 +46,7 @@ export class TransactionUseCase implements TransactionUseCasePort {
     transactionId: number,
     transaction: Partial<Transaction>,
   ) {
-    await this.transactionRepositoryPort.updateTransaction(
+    await this.transactionRepository.updateTransaction(
       transactionId,
       transaction,
     );
@@ -60,7 +58,7 @@ export class TransactionUseCase implements TransactionUseCasePort {
     verifyTransactionDto: EsewaTransactionVerificationDto,
   ) {
     const transaction =
-      await this.transactionRepositoryPort.findUserTransactionById({
+      await this.transactionRepository.findUserTransactionById({
         userId: user.id,
         transactionId,
       });
@@ -73,7 +71,7 @@ export class TransactionUseCase implements TransactionUseCasePort {
       verifyTransactionDto,
     );
 
-    return this.transactionRepositoryPort.updateTransaction(transaction.id, {
+    return this.transactionRepository.updateTransaction(transaction.id, {
       status: TRANSACTION_STATUS.SUCCESS,
       paymentProviderId: res?.refId as string,
     });
@@ -85,7 +83,7 @@ export class TransactionUseCase implements TransactionUseCasePort {
     verifyTransactionDto: KhaltiTransactionVerificationDto,
   ) {
     const transaction =
-      await this.transactionRepositoryPort.findUserTransactionById({
+      await this.transactionRepository.findUserTransactionById({
         userId: user.id,
         transactionId,
       });
@@ -98,7 +96,7 @@ export class TransactionUseCase implements TransactionUseCasePort {
       verifyTransactionDto,
     );
 
-    return this.transactionRepositoryPort.updateTransaction(transaction.id, {
+    return this.transactionRepository.updateTransaction(transaction.id, {
       status: TRANSACTION_STATUS.SUCCESS,
     });
   }

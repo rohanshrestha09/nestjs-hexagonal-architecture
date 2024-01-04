@@ -3,7 +3,7 @@ import { Transaction } from '../../domain/transaction.domain';
 import { EsewaTransactionVerificationDto } from 'src/modules/online-payment/application/dto/esewa-online-payment.dto';
 import { KhaltiTransactionVerificationDto } from 'src/modules/online-payment/application/dto/khalti-online-payment.dto';
 
-export abstract class TransactionUseCasePort {
+export abstract class TransactionUseCase {
   abstract getTransactionById(transactionId: number): Promise<Transaction>;
   abstract createTransaction(
     transaction: Transaction,

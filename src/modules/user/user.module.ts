@@ -1,11 +1,11 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepositoryPort } from './ports/out/user-repository.port';
 import { UserController } from './adapters/primary/web/user.controller';
 import { MySQLTypeORMUserEntity } from './adapters/secondary/mysql-typeorm/user-mysql-typeorm.entity';
-import { MySQLTypeORMUserRepository } from './adapters/secondary/mysql-typeorm/user-mysql-typeorm.repository';
-import { UserUseCasePort } from './ports/in/user-usecase.port';
-import { UserUseCase } from './application/usecases/user.usecase';
+import { UserUseCaseImpl } from './application/usecases/user.usecase';
+import { UserUseCase } from './ports/in/user-usecase.port';
+import { UserRepository } from './ports/out/user-repository.port';
+import { MySQLTypeORMUserRepositoryImpl } from './adapters/secondary/mysql-typeorm/user-mysql-typeorm.repository';
 
 @Global()
 @Module({
@@ -13,14 +13,14 @@ import { UserUseCase } from './application/usecases/user.usecase';
   controllers: [UserController],
   providers: [
     {
-      provide: UserUseCasePort,
-      useClass: UserUseCase,
+      provide: UserUseCase,
+      useClass: UserUseCaseImpl,
     },
     {
-      provide: UserRepositoryPort,
-      useClass: MySQLTypeORMUserRepository,
+      provide: UserRepository,
+      useClass: MySQLTypeORMUserRepositoryImpl,
     },
   ],
-  exports: [UserRepositoryPort, UserUseCasePort],
+  exports: [UserRepository, UserUseCase],
 })
 export class UserModule {}

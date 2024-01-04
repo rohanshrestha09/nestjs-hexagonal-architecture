@@ -6,8 +6,8 @@ import { KhaltiModule } from '@dallotech/nestjs-khalti';
 import { AllConfig } from 'src/config/config.type';
 import { EsewaOptions } from '@dallotech/nestjs-esewa/dist/esewa.interface';
 import { KhaltiOptions } from '@dallotech/nestjs-khalti/dist/khalti.interface';
-import { OnlinePaymentUseCasePort } from './ports/in/online-payment-usecase.port';
-import { OnlinePaymentUseCase } from './application/usecases/online-payment.usecase';
+import { OnlinePaymentUseCase } from './ports/in/online-payment-usecase.port';
+import { OnlinePaymentUseCaseImpl } from './application/usecases/online-payment.usecase';
 
 @Module({
   imports: [
@@ -39,10 +39,10 @@ import { OnlinePaymentUseCase } from './application/usecases/online-payment.usec
   ],
   providers: [
     {
-      provide: OnlinePaymentUseCasePort,
-      useClass: OnlinePaymentUseCase,
+      provide: OnlinePaymentUseCase,
+      useClass: OnlinePaymentUseCaseImpl,
     },
   ],
-  exports: [OnlinePaymentUseCasePort],
+  exports: [OnlinePaymentUseCase],
 })
 export class OnlinePaymentModule {}

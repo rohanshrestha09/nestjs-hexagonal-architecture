@@ -1,34 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { Privilege } from '../../domain/privilege.domain';
-import { PrivilegeUseCasePort } from '../../ports/in/privilege-usecase.port';
-import { PrivilegeRepositoryPort } from '../../ports/out/privilege-repository.port';
+import { PrivilegeUseCase } from '../../ports/in/privilege-usecase.port';
+import { PrivilegeRepository } from '../../ports/out/privilege-repository.port';
 import { QueryPrivilegeDto } from '../dto/query-privilege.dto';
 
 @Injectable()
-export class PrivilegeUseCase implements PrivilegeUseCasePort {
-  constructor(
-    private readonly privilegeRepositoryPort: PrivilegeRepositoryPort,
-  ) {}
+export class PrivilegeUseCaseImpl implements PrivilegeUseCase {
+  constructor(private readonly privilegeRepository: PrivilegeRepository) {}
 
   async getPrivilegeById(id: number) {
-    return await this.privilegeRepositoryPort.findPrivilegeById(id);
+    return await this.privilegeRepository.findPrivilegeById(id);
   }
 
   async getPrivilegeByName(name: string) {
-    return await this.privilegeRepositoryPort.findPrivilegeByName(name);
+    return await this.privilegeRepository.findPrivilegeByName(name);
   }
 
   async getAllPrivileges(queryPrivilegeDto: QueryPrivilegeDto) {
-    return await this.privilegeRepositoryPort.findAllPrivileges(
-      queryPrivilegeDto,
-    );
+    return await this.privilegeRepository.findAllPrivileges(queryPrivilegeDto);
   }
 
   async getAllPrivilegeByNames(names: string[]) {
-    return await this.privilegeRepositoryPort.findAllPrivilegeByNames(names);
+    return await this.privilegeRepository.findAllPrivilegeByNames(names);
   }
 
   async createPrivilege(privilege: Privilege) {
-    return await this.privilegeRepositoryPort.createPrivilege(privilege);
+    return await this.privilegeRepository.createPrivilege(privilege);
   }
 }

@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MySQLTypeORMUserEntity } from './user-mysql-typeorm.entity';
-import { UserRepositoryPort } from 'src/modules/user/ports/out/user-repository.port';
+import { UserRepository } from 'src/modules/user/ports/out/user-repository.port';
 import { User } from 'src/modules/user/domain/user.domain';
 
 @Injectable()
-export class MySQLTypeORMUserRepository implements UserRepositoryPort {
+export class MySQLTypeORMUserRepositoryImpl implements UserRepository {
   constructor(
     @InjectRepository(MySQLTypeORMUserEntity)
     private userRepository: Repository<MySQLTypeORMUserEntity>,

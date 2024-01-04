@@ -15,15 +15,15 @@ import { ResponseDto } from 'src/utils/dto/response.dto';
 import { CreatePrivilegeDto } from 'src/modules/privilege/application/dto/create-privilege.dto';
 import { QueryPrivilegeDto } from 'src/modules/privilege/application/dto/query-privilege.dto';
 import { Privilege } from 'src/modules/privilege/domain/privilege.domain';
-import { PrivilegeUseCasePort } from 'src/modules/privilege/ports/in/privilege-usecase.port';
+import { PrivilegeUseCase } from 'src/modules/privilege/ports/in/privilege-usecase.port';
 import { ROLE } from 'src/modules/role/infrastructure/enums/role.enum';
 
 @ApiBearerAuth()
-@ApiTags('privilege')
+@ApiTags('admin/privilege')
 @Roles(ROLE.ADMIN)
-@Controller('privilege')
+@Controller('admin/privilege')
 export class PrivilegeController {
-  constructor(private readonly privilegeUseCase: PrivilegeUseCasePort) {}
+  constructor(private readonly privilegeUseCase: PrivilegeUseCase) {}
 
   @Post()
   @ApiOperation({ summary: 'create privilege' })

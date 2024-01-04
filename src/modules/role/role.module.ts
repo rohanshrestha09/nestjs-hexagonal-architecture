@@ -1,11 +1,11 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleController } from './adapters/primary/web/role.controller';
-import { RoleRepositoryPort } from './ports/out/role-repository.port';
+import { RoleRepository } from './ports/out/role-repository.port';
 import { MySQLTypeORMRoleEntity } from './adapters/secondary/mysql-typeorm/role-mysql-typeorm.entity';
-import { MySQLTypeORMRoleRepository } from './adapters/secondary/mysql-typeorm/role-mysql-typeorm.repository';
-import { RoleUseCase } from './application/usecases/role.usecase';
-import { RoleUseCasePort } from './ports/in/role-usecase.port';
+import { MySQLTypeORMRoleRepositoryImpl } from './adapters/secondary/mysql-typeorm/role-mysql-typeorm.repository';
+import { RoleUseCaseImpl } from './application/usecases/role.usecase';
+import { RoleUseCase } from './ports/in/role-usecase.port';
 
 @Global()
 @Module({
@@ -13,14 +13,14 @@ import { RoleUseCasePort } from './ports/in/role-usecase.port';
   controllers: [RoleController],
   providers: [
     {
-      provide: RoleUseCasePort,
-      useClass: RoleUseCase,
+      provide: RoleUseCase,
+      useClass: RoleUseCaseImpl,
     },
     {
-      provide: RoleRepositoryPort,
-      useClass: MySQLTypeORMRoleRepository,
+      provide: RoleRepository,
+      useClass: MySQLTypeORMRoleRepositoryImpl,
     },
   ],
-  exports: [RoleRepositoryPort, RoleUseCasePort],
+  exports: [RoleRepository, RoleUseCase],
 })
 export class RoleModule {}

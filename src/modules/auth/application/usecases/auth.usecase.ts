@@ -2,18 +2,18 @@ import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/modules/user/domain/user.domain';
-import { UserUseCasePort } from 'src/modules/user/ports/in/user-usecase.port';
-import { RoleUseCasePort } from 'src/modules/role/ports/in/role-usecase.port';
-import { AuthUseCasePort } from '../../ports/in/auth-usecase.port';
+import { UserUseCase } from 'src/modules/user/ports/in/user-usecase.port';
+import { RoleUseCase } from 'src/modules/role/ports/in/role-usecase.port';
+import { AuthUseCase } from '../../ports/in/auth-usecase.port';
 import { LoginDto } from '../dto/login-auth.dto';
 import { RegisterDto } from '../dto/register-auth.dto';
 import { ROLE } from 'src/modules/role/infrastructure/enums/role.enum';
 
-export class AuthUseCase implements AuthUseCasePort {
+export class AuthUseCaseImpl implements AuthUseCase {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly userUseCase: UserUseCasePort,
-    private readonly roleUseCase: RoleUseCasePort,
+    private readonly userUseCase: UserUseCase,
+    private readonly roleUseCase: RoleUseCase,
   ) {}
 
   async login({ email, password }: LoginDto) {

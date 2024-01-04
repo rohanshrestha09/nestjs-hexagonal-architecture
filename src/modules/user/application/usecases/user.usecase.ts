@@ -1,31 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../domain/user.domain';
-import { UserUseCasePort } from '../../ports/in/user-usecase.port';
-import { UserRepositoryPort } from '../../ports/out/user-repository.port';
+import { UserUseCase } from '../../ports/in/user-usecase.port';
+import { UserRepository } from '../../ports/out/user-repository.port';
 
 @Injectable()
-export class UserUseCase implements UserUseCasePort {
-  constructor(private userRepositoryPort: UserRepositoryPort) {}
+export class UserUseCaseImpl implements UserUseCase {
+  constructor(private userRepository: UserRepository) {}
 
   async getUserById(userId: string) {
-    return await this.userRepositoryPort.findUserById(userId);
+    return await this.userRepository.findUserById(userId);
   }
 
   async getUserByEmail(email: string) {
-    return await this.userRepositoryPort.findUserByEmail(email);
+    return await this.userRepository.findUserByEmail(email);
   }
 
   async getUserPasswordById(userId: string) {
-    return this.userRepositoryPort.findUserPassword(userId);
+    return this.userRepository.findUserPassword(userId);
   }
 
   async userExistsByEmail(email: string) {
-    const userExists = await this.userRepositoryPort.findUserByEmail(email);
+    const userExists = await this.userRepository.findUserByEmail(email);
 
     return !!userExists;
   }
 
   async createUser(user: User) {
-    return await this.userRepositoryPort.createUser(user);
+    return await this.userRepository.createUser(user);
   }
 }

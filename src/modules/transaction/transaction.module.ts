@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionController } from './adapters/primary/web/transaction.controller';
 import { OnlinePaymentModule } from '../online-payment/online-payment.module';
-import { TransactionRepositoryPort } from './ports/out/transaction-repository.port';
+import { TransactionRepository } from './ports/out/transaction-repository.port';
 import { MySQLTypeORMTransactionEntity } from './adapters/secondary/mysql-typeorm/transaction-mysql-typeorm.entity';
-import { TransactionUseCasePort } from './ports/in/transaction-usecase.port';
-import { TransactionUseCase } from './application/usecases/transaction.usecase';
+import { TransactionUseCase } from './ports/in/transaction-usecase.port';
+import { TransactionUseCaseImpl } from './application/usecases/transaction.usecase';
+import { MySQLTypeORMTransactionRepositoryImpl } from './adapters/secondary/mysql-typeorm/transaction-mysql-typeorm.repository';
 
 @Module({
   imports: [
@@ -15,14 +16,14 @@ import { TransactionUseCase } from './application/usecases/transaction.usecase';
   controllers: [TransactionController],
   providers: [
     {
-      provide: TransactionUseCasePort,
-      useClass: TransactionUseCase,
+      provide: TransactionUseCase,
+      useClass: TransactionUseCaseImpl,
     },
     {
-      provide: TransactionRepositoryPort,
-      useClass: MySQLTypeORMTransactionEntity,
+      provide: TransactionRepository,
+      useClass: MySQLTypeORMTransactionRepositoryImpl,
     },
   ],
-  exports: [TransactionRepositoryPort, TransactionUseCasePort],
+  exports: [TransactionRepository, TransactionUseCase],
 })
 export class TransactionModule {}

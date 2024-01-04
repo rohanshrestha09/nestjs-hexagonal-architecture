@@ -14,13 +14,13 @@ import { ResponseDto } from 'src/utils/dto/response.dto';
 import { CreateTransactionDto } from 'src/modules/transaction/application/dto/create-transaction.dto';
 import { EsewaTransactionVerificationDto } from 'src/modules/online-payment/application/dto/esewa-online-payment.dto';
 import { KhaltiTransactionVerificationDto } from 'src/modules/online-payment/application/dto/khalti-online-payment.dto';
-import { TransactionUseCasePort } from 'src/modules/transaction/ports/in/transaction-usecase.port';
+import { TransactionUseCase } from 'src/modules/transaction/ports/in/transaction-usecase.port';
 import { ROLE } from 'src/modules/role/infrastructure/enums/role.enum';
 
 @ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionUseCase: TransactionUseCasePort) {}
+  constructor(private readonly transactionUseCase: TransactionUseCase) {}
 
   @ApiBearerAuth()
   @ApiBody({ type: CreateTransactionDto })

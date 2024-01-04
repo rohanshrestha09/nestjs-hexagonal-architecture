@@ -8,7 +8,7 @@ import {
 } from '../../application/dto/khalti-online-payment.dto';
 import { TransactionDto } from '../../application/dto/transaction-online-payment.dto';
 
-export abstract class OnlinePaymentUseCasePort {
+export abstract class OnlinePaymentUseCase {
   abstract initEsewaPayment(data: EsewaPaymentDto): Promise<void>;
   abstract initKhaltiPayment(
     data: KhaltiPaymentDto,

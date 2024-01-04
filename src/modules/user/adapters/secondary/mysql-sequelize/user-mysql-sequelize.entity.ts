@@ -10,6 +10,7 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { MySQLSequelizeBlogEntity } from 'src/modules/blog/adapters/secondary/mysql-sequelize/blog-mysql-sequelize.entity';
 import { MySQLSequelizePrivilegeEntity } from 'src/modules/privilege/adapters/secondary/mysql-sequelize/privilege-mysql-sequelize.entity';
 import { MySQLSequelizeRoleEntity } from 'src/modules/role/adapters/secondary/mysql-sequelize/role-mysql-sequelize.entity';
 import { MySQLSequelizeTransactionEntity } from 'src/modules/transaction/adapters/secondary/mysql-sequelize/transaction-mysql-sequelize.entity';
@@ -58,6 +59,9 @@ export class MySQLSequelizeUserEntity extends Model implements User {
 
   @HasMany(() => MySQLSequelizeTransactionEntity, 'userId')
   transactions: MySQLSequelizeTransactionEntity[];
+
+  @HasMany(() => MySQLSequelizeBlogEntity, 'userId')
+  blogs: MySQLSequelizeBlogEntity[];
 }
 
 export default MySQLSequelizeUserEntity;

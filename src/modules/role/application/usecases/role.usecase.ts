@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { RoleRepositoryPort } from '../../ports/out/role-repository.port';
-import { RoleUseCasePort } from '../../ports/in/role-usecase.port';
+import { RoleRepository } from '../../ports/out/role-repository.port';
+import { RoleUseCase } from '../../ports/in/role-usecase.port';
 import { ROLE } from '../../infrastructure/enums/role.enum';
 
 @Injectable()
-export class RoleUseCase implements RoleUseCasePort {
-  constructor(private roleRepositoryPort: RoleRepositoryPort) {}
+export class RoleUseCaseImpl implements RoleUseCase {
+  constructor(private roleRepository: RoleRepository) {}
 
   async getRoleByName(name: ROLE) {
-    return await this.roleRepositoryPort.findRoleByName(name);
+    return await this.roleRepository.findRoleByName(name);
   }
 }

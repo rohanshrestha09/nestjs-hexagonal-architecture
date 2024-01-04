@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { EsewaService } from '@dallotech/nestjs-esewa';
 import { KhaltiService } from '@dallotech/nestjs-khalti';
 import { AllConfig } from 'src/config/config.type';
-import { OnlinePaymentUseCasePort } from '../../ports/in/online-payment-usecase.port';
+import { OnlinePaymentUseCase } from '../../ports/in/online-payment-usecase.port';
 import {
   EsewaPaymentDto,
   EsewaTransactionVerificationDto,
@@ -15,7 +15,7 @@ import {
 } from '../dto/khalti-online-payment.dto';
 
 @Injectable()
-export class OnlinePaymentUseCase implements OnlinePaymentUseCasePort {
+export class OnlinePaymentUseCaseImpl implements OnlinePaymentUseCase {
   constructor(
     private readonly esewaService: EsewaService,
     private readonly khaltiService: KhaltiService,

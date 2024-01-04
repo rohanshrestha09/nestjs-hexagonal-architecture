@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { MySQLSequelizeTransactionEntity } from './transaction-mysql-sequelize.entity';
-import { TransactionRepositoryPort } from 'src/modules/transaction/ports/out/transaction-repository.port';
+import { TransactionRepository } from 'src/modules/transaction/ports/out/transaction-repository.port';
 import { Transaction } from 'src/modules/transaction/domain/transaction.domain';
 
 @Injectable()
-export class MySQLSequelizeTransactionRepository extends TransactionRepositoryPort {
+export class MySQLSequelizeTransactionRepositoryImpl extends TransactionRepository {
   constructor(
     @InjectModel(MySQLSequelizeTransactionEntity)
     private transactionRepository: typeof MySQLSequelizeTransactionEntity,

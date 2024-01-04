@@ -1,6 +1,6 @@
 import { Transaction } from '../../domain/transaction.domain';
 
-export abstract class TransactionRepositoryPort {
+export abstract class TransactionRepository {
   abstract findUserTransactionById({
     userId,
     transactionId,

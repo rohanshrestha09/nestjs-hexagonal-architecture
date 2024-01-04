@@ -7,8 +7,8 @@ import { AuthController } from './adapters/primary/web/auth.controller';
 import { UserModule } from '../user/user.module';
 import { RoleModule } from '../role/role.module';
 import { AllConfig } from 'src/config/config.type';
-import { AuthUseCasePort } from './ports/in/auth-usecase.port';
-import { AuthUseCase } from './application/usecases/auth.usecase';
+import { AuthUseCase } from './ports/in/auth-usecase.port';
+import { AuthUseCaseImpl } from './application/usecases/auth.usecase';
 
 @Global()
 @Module({
@@ -31,8 +31,8 @@ import { AuthUseCase } from './application/usecases/auth.usecase';
   controllers: [AuthController],
   providers: [
     {
-      provide: AuthUseCasePort,
-      useClass: AuthUseCase,
+      provide: AuthUseCase,
+      useClass: AuthUseCaseImpl,
     },
     JwtStrategy,
   ],

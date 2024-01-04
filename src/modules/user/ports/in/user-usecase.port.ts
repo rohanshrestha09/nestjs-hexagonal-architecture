@@ -1,6 +1,6 @@
 import { User } from '../../domain/user.domain';
 
-export abstract class UserUseCasePort {
+export abstract class UserUseCase {
   abstract getUserById(userId: string): Promise<User>;
   abstract getUserByEmail(email: string): Promise<User>;
   abstract getUserPasswordById(userId: string): Promise<string>;

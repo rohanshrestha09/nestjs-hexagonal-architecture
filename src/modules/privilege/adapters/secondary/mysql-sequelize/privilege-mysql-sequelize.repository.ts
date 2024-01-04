@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { MySQLSequelizePrivilegeEntity } from './privilege-mysql-sequelize.entity';
-import { PrivilegeRepositoryPort } from 'src/modules/privilege/ports/out/privilege-repository.port';
+import { PrivilegeRepository } from 'src/modules/privilege/ports/out/privilege-repository.port';
 import { QueryPrivilegeDto } from 'src/modules/privilege/application/dto/query-privilege.dto';
 import { Privilege } from 'src/modules/privilege/domain/privilege.domain';
 
 @Injectable()
-export class PrivilegeRepository extends PrivilegeRepositoryPort {
+export class MySQLSequelizePrivilegeRepositoryImpl extends PrivilegeRepository {
   constructor(
     @InjectModel(MySQLSequelizePrivilegeEntity)
     private privilegeRepository: typeof MySQLSequelizePrivilegeEntity,
