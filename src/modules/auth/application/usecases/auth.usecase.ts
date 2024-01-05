@@ -1,4 +1,8 @@
-import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  ForbiddenException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/modules/user/domain/user.domain';
@@ -9,6 +13,7 @@ import { LoginDto } from '../dto/login-auth.dto';
 import { RegisterDto } from '../dto/register-auth.dto';
 import { ROLE } from 'src/modules/role/infrastructure/enums/role.enum';
 
+@Injectable()
 export class AuthUseCaseImpl implements AuthUseCase {
   constructor(
     private readonly jwtService: JwtService,

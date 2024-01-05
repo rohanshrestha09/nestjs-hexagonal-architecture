@@ -75,5 +75,7 @@ export class UserBlogController {
       { userId: user.id, slug },
       Blog.update(updateBlogDto),
     );
+
+    return new ResponseDto('Blog Updated');
   }
 }
