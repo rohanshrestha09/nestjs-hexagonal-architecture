@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { plainToInstance } from 'class-transformer';
 import { CreateBookProps, UpdateBookProps } from './book.types';
+import { Course } from 'src/modules/course/domain/course.domain';
 import { BOOK_STATUS } from '../infrastructure/enums/book.enum';
 
 export class Book {
@@ -18,6 +19,7 @@ export class Book {
   status: BOOK_STATUS;
   createdAt: Date;
   updatedAt: Date;
+  courses: Course[];
 
   public static create(createBookProps: CreateBookProps) {
     const createBookValidator = z.object({

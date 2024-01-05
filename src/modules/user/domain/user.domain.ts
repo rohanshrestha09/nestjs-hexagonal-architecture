@@ -3,6 +3,7 @@ import { Exclude, plainToInstance } from 'class-transformer';
 import { Privilege } from 'src/modules/privilege/domain/privilege.domain';
 import { Blog } from 'src/modules/blog/domain/blog.domain';
 import { Role } from 'src/modules/role/domain/role.domain';
+import { Course } from 'src/modules/course/domain/course.domain';
 import { CreateUserProps, UpdateUserProps } from './user.types';
 
 export class User {
@@ -19,6 +20,7 @@ export class User {
   role: Role;
   privileges: Privilege[];
   blogs: Blog[];
+  courses: Course[];
 
   public static create(createUserProps: CreateUserProps) {
     const createUserValidator = z.object({

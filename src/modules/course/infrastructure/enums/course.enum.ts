@@ -1,0 +1,4 @@
+export enum COURSE_STATUS {
+  PUBLISHED = 'PUBLISHED',
+  ARCHIVED = 'ARCHIVED',
+}

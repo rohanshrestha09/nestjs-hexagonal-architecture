@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  ManyToMany,
 } from 'typeorm';
 import { Book } from 'src/modules/book/domain/book.domain';
 import { BOOK_STATUS } from 'src/modules/book/infrastructure/enums/book.enum';
+import { MySQLTypeORMCourseEntity } from 'src/modules/course/adapters/secondary/mysql-typeorm/course-mysql-typeorm.entity';
 
 @Entity('book')
 export class MySQLTypeORMBookEntity extends BaseEntity implements Book {
@@ -52,4 +54,7 @@ export class MySQLTypeORMBookEntity extends BaseEntity implements Book {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToMany(() => MySQLTypeORMCourseEntity, (course) => course.books)
+  courses: MySQLTypeORMCourseEntity[];
 }

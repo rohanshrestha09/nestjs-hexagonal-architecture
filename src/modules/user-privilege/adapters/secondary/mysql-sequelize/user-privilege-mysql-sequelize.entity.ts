@@ -6,7 +6,7 @@ import { MySQLSequelizeUserEntity } from 'src/modules/user/adapters/secondary/my
 export class MySQLSequelizeUserPrivilegeEntity extends Model {
   @ForeignKey(() => MySQLSequelizeUserEntity)
   @Column
-  userId: number;
+  userId: string;
 
   @ForeignKey(() => MySQLSequelizePrivilegeEntity)
   @Column

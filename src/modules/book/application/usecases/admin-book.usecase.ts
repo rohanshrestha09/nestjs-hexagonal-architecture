@@ -12,6 +12,14 @@ export class AdminBookUseCaseImpl implements AdminBookUseCase {
     return await this.bookRepository.findAllBooks(queryBookDto);
   }
 
+  async getAdminBooksByCourseId(id: number) {
+    return await this.bookRepository.findAllBooksByCourseId(id);
+  }
+
+  async getAdminBooksByCourseCode(code: string) {
+    return await this.bookRepository.findAllBooksByCourseCode(code);
+  }
+
   async getAdminBookById(id: number) {
     return await this.bookRepository.findBookById(id);
   }

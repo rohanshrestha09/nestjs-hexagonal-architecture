@@ -11,4 +11,6 @@ export abstract class AdminBookUseCase {
     code: string,
     book: Partial<Book>,
   ): Promise<void>;
+  abstract getAdminBooksByCourseId(id: number): Promise<Book[]>;
+  abstract getAdminBooksByCourseCode(code: string): Promise<Book[]>;
 }

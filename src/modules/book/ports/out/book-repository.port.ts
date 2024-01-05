@@ -8,4 +8,6 @@ export abstract class BookRepository {
   abstract createBook(book: Book): Promise<Book>;
   abstract updateBookById(bookId: number, book: Partial<Book>): Promise<void>;
   abstract updateBookByCode(code: string, book: Partial<Book>): Promise<void>;
+  abstract findAllBooksByCourseCode(code: string): Promise<Book[]>;
+  abstract findAllBooksByCourseId(id: number): Promise<Book[]>;
 }

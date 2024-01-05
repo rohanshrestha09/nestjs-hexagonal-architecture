@@ -26,7 +26,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         infer: true,
       }),
       models: [__dirname + '/../../**/*-sequelize/*.entity{.ts,.js}'],
-      autoLoadModels: true,
+      // autoLoadModels: true,
       define: {
         timestamps: true,
       },

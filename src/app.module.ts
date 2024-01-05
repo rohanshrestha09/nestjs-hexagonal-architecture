@@ -27,6 +27,7 @@ import { OnlinePaymentModule } from './modules/online-payment/online-payment.mod
 import { TransactionModule } from './modules/transaction/transaction.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { BookModule } from './modules/book/book.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { BookModule } from './modules/book/book.module';
     TransactionModule,
     BlogModule,
     BookModule,
+    CourseModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

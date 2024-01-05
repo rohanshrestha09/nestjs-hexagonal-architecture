@@ -27,6 +27,18 @@ export class MySQLTypeORMBookRepositoryImpl implements BookRepository {
     return [Book.toDomains(books), count] as [Book[], number];
   }
 
+  async findAllBooksByCourseCode(code: string) {
+    return Book.toDomains(
+      await this.bookRepository.find({ where: { courses: { code } } }),
+    );
+  }
+
+  async findAllBooksByCourseId(id: number) {
+    return Book.toDomains(
+      await this.bookRepository.find({ where: { courses: { id } } }),
+    );
+  }
+
   async findBookById(bookId: number) {
     return Book.toDomain(
       await this.bookRepository.findOneOrFail({

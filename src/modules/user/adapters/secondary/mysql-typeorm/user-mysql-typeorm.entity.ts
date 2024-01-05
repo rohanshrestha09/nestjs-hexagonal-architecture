@@ -15,6 +15,7 @@ import { User } from 'src/modules/user/domain/user.domain';
 import { MySQLTypeORMRoleEntity } from 'src/modules/role/adapters/secondary/mysql-typeorm/role-mysql-typeorm.entity';
 import { MySQLTypeORMPrivilegeEntity } from 'src/modules/privilege/adapters/secondary/mysql-typeorm/privilege-mysql-typeorm.entity';
 import { MySQLTypeORMBlogEntity } from 'src/modules/blog/adapters/secondary/mysql-typeorm/blog-mysql-typeorm.entity';
+import { MySQLTypeORMCourseEntity } from 'src/modules/course/adapters/secondary/mysql-typeorm/course-mysql-typeorm.entity';
 
 @Entity('user')
 export class MySQLTypeORMUserEntity extends BaseEntity implements User {
@@ -51,4 +52,8 @@ export class MySQLTypeORMUserEntity extends BaseEntity implements User {
 
   @OneToMany(() => MySQLTypeORMBlogEntity, (blog) => blog.user)
   blogs: MySQLTypeORMBlogEntity[];
+
+  @ManyToMany(() => MySQLTypeORMCourseEntity, (course) => course.users)
+  @JoinTable()
+  courses: MySQLTypeORMCourseEntity[];
 }

@@ -11,9 +11,11 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { MySQLSequelizeBlogEntity } from 'src/modules/blog/adapters/secondary/mysql-sequelize/blog-mysql-sequelize.entity';
+import { MySQLSequelizeCourseEntity } from 'src/modules/course/adapters/secondary/mysql-sequelize/course-mysql-sequelize.entity';
 import { MySQLSequelizePrivilegeEntity } from 'src/modules/privilege/adapters/secondary/mysql-sequelize/privilege-mysql-sequelize.entity';
 import { MySQLSequelizeRoleEntity } from 'src/modules/role/adapters/secondary/mysql-sequelize/role-mysql-sequelize.entity';
 import { MySQLSequelizeTransactionEntity } from 'src/modules/transaction/adapters/secondary/mysql-sequelize/transaction-mysql-sequelize.entity';
+import { MySQLSequelizeUserCourseEntity } from 'src/modules/user-course/adapters/secondary/mysql-sequelize/user-course-mysql-sequelize.entity';
 import { MySQLSequelizeUserPrivilegeEntity } from 'src/modules/user-privilege/adapters/secondary/mysql-sequelize/user-privilege-mysql-sequelize.entity';
 import { User } from 'src/modules/user/domain/user.domain';
 
@@ -62,6 +64,12 @@ export class MySQLSequelizeUserEntity extends Model implements User {
 
   @HasMany(() => MySQLSequelizeBlogEntity, 'userId')
   blogs: MySQLSequelizeBlogEntity[];
+
+  @BelongsToMany(
+    () => MySQLSequelizeCourseEntity,
+    () => MySQLSequelizeUserCourseEntity,
+  )
+  courses: MySQLSequelizeCourseEntity[];
 }
 
 export default MySQLSequelizeUserEntity;
