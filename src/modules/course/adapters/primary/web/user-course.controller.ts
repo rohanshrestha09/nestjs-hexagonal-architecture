@@ -45,7 +45,7 @@ export class UserCourseController {
   async findOne(@Param('code') code: string, @User() user: UserDomain) {
     return new ResponseDto(
       'Course Fetched',
-      await this.userCourseUseCase.getEnrolledCourseByCode({
+      await this.userCourseUseCase.getEnrolledCourseByCodeWithBooks({
         userId: user.id,
         courseCode: code,
       }),

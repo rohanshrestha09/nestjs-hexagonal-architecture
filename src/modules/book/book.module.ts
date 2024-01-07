@@ -6,6 +6,8 @@ import { AdminBookUseCase } from './ports/in/admin-book-usecase.port';
 import { AdminBookUseCaseImpl } from './application/usecases/admin-book.usecase';
 import { BookRepository } from './ports/out/book-repository.port';
 import { MySQLTypeORMBookRepositoryImpl } from './adapters/secondary/mysql-typeorm/book-mysql-typeorm.repository';
+import { UserBookUseCase } from './ports/in/user-book-usecase.port';
+import { UserBookUseCaseImpl } from './application/usecases/user-book.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MySQLTypeORMBookEntity])],
@@ -16,10 +18,14 @@ import { MySQLTypeORMBookRepositoryImpl } from './adapters/secondary/mysql-typeo
       useClass: AdminBookUseCaseImpl,
     },
     {
+      provide: UserBookUseCase,
+      useClass: UserBookUseCaseImpl,
+    },
+    {
       provide: BookRepository,
       useClass: MySQLTypeORMBookRepositoryImpl,
     },
   ],
-  exports: [AdminBookUseCase],
+  exports: [AdminBookUseCase, UserBookUseCase],
 })
 export class BookModule {}

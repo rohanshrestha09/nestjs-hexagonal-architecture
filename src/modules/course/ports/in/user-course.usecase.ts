@@ -13,14 +13,14 @@ export abstract class UserCourseUseCase {
     userId: string;
     courseCode: string;
   }): Promise<void>;
-  abstract getEnrolledCourseByCode({
+  abstract getEnrolledCourseByCodeWithBooks({
     userId,
     courseCode,
   }: {
     userId: string;
     courseCode: string;
   }): Promise<Course>;
-  abstract getEnrolledCourseById({
+  abstract getEnrolledCourseByIdWithBooks({
     userId,
     courseId,
   }: {

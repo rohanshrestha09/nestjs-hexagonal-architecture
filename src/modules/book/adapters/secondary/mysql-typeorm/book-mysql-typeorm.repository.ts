@@ -72,4 +72,46 @@ export class MySQLTypeORMBookRepositoryImpl implements BookRepository {
   async updateBookByCode(code: string, book: Partial<Book>) {
     await this.bookRepository.update({ code }, book);
   }
+
+  async findUserBooksByCourseId({
+    userId,
+    courseId,
+  }: {
+    userId: string;
+    courseId: number;
+  }) {
+    return Book.toDomains(
+      await this.bookRepository.find({
+        where: {
+          courses: {
+            id: courseId,
+            users: {
+              id: userId,
+            },
+          },
+        },
+      }),
+    );
+  }
+
+  async findUserBooksByCourseCode({
+    userId,
+    courseCode,
+  }: {
+    userId: string;
+    courseCode: string;
+  }) {
+    return Book.toDomains(
+      await this.bookRepository.find({
+        where: {
+          courses: {
+            code: courseCode,
+            users: {
+              id: userId,
+            },
+          },
+        },
+      }),
+    );
+  }
 }

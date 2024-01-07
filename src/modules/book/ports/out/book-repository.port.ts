@@ -10,4 +10,18 @@ export abstract class BookRepository {
   abstract updateBookByCode(code: string, book: Partial<Book>): Promise<void>;
   abstract findAllBooksByCourseCode(code: string): Promise<Book[]>;
   abstract findAllBooksByCourseId(id: number): Promise<Book[]>;
+  abstract findUserBooksByCourseId({
+    userId,
+    courseId,
+  }: {
+    userId: string;
+    courseId: number;
+  }): Promise<Book[]>;
+  abstract findUserBooksByCourseCode({
+    userId,
+    courseCode,
+  }: {
+    userId: string;
+    courseCode: string;
+  }): Promise<Book[]>;
 }
