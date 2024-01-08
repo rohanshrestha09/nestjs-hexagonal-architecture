@@ -10,9 +10,14 @@ import { UserCourseUseCase } from './ports/in/user-course.usecase';
 import { UserCourseUseCaseImpl } from './application/usecases/user-course.usecase';
 import { UserCourseController } from './adapters/primary/web/user-course.controller';
 import { BookModule } from '../book/book.module';
+import { BlogModule } from '../blog/blog.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MySQLTypeORMCourseEntity]), BookModule],
+  imports: [
+    TypeOrmModule.forFeature([MySQLTypeORMCourseEntity]),
+    BlogModule,
+    BookModule,
+  ],
   controllers: [AdminCourseController, UserCourseController],
   providers: [
     {
@@ -28,6 +33,6 @@ import { BookModule } from '../book/book.module';
       useClass: MySQLTypeORMCourseRepositoryImpl,
     },
   ],
-  exports: [AdminCourseUseCase],
+  exports: [AdminCourseUseCase, UserCourseUseCase],
 })
 export class CourseModule {}

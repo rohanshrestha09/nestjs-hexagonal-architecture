@@ -25,4 +25,5 @@ export abstract class CourseRepository {
     user: User,
     queryCourseDto: QueryCourseDto,
   ): Promise<[Course[], number]>;
+  abstract countUserCourses(user: User): Promise<number>;
 }

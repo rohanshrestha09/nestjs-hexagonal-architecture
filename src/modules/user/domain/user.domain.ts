@@ -10,6 +10,7 @@ export class User {
   id: string;
   name: string;
   email: string;
+  phone: string;
 
   @Exclude()
   password: string;
@@ -23,12 +24,20 @@ export class User {
   courses: Course[];
 
   public static create(createUserProps: CreateUserProps) {
-    const createUserValidator = z.object({
-      name: z.string(),
-      email: z.string().email(),
-      password: z.string(),
-      roleId: z.number(),
-    });
+    const createUserValidator = z.union([
+      z.object({
+        name: z.string(),
+        phone: z.string(),
+        password: z.string(),
+        roleId: z.number(),
+      }),
+      z.object({
+        name: z.string(),
+        email: z.string().email(),
+        password: z.string(),
+        roleId: z.number(),
+      }),
+    ]);
 
     return plainToInstance(User, createUserValidator.parse(createUserProps), {
       exposeUnsetFields: false,

@@ -33,6 +33,6 @@ import { BlogUseCaseImpl } from './application/usecases/blog.usecase';
       useClass: MySQLTypeORMBlogRepositoryImpl,
     },
   ],
-  exports: [AdminBlogUseCase, UserBlogUseCase],
+  exports: [BlogUseCase, AdminBlogUseCase, UserBlogUseCase],
 })
 export class BlogModule {}

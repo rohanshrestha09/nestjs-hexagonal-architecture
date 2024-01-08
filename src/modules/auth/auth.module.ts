@@ -9,6 +9,8 @@ import { RoleModule } from '../role/role.module';
 import { AllConfig } from 'src/config/config.type';
 import { AuthUseCase } from './ports/in/auth-usecase.port';
 import { AuthUseCaseImpl } from './application/usecases/auth.usecase';
+import { OtpModule } from '../otp/otp.module';
+import { CourseModule } from '../course/course.module';
 
 @Global()
 @Module({
@@ -27,6 +29,8 @@ import { AuthUseCaseImpl } from './application/usecases/auth.usecase';
     }),
     UserModule,
     RoleModule,
+    OtpModule,
+    CourseModule,
   ],
   controllers: [AuthController],
   providers: [

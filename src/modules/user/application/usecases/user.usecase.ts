@@ -15,14 +15,24 @@ export class UserUseCaseImpl implements UserUseCase {
     return await this.userRepository.findUserByEmail(email);
   }
 
-  async getUserPasswordById(userId: string) {
-    return this.userRepository.findUserPassword(userId);
+  async getUserByPhone(phone: string) {
+    return await this.userRepository.findUserByPhone(phone);
+  }
+
+  async getUserPassword(userId: string) {
+    return await this.userRepository.findUserPassword(userId);
+  }
+
+  async changeUserPassword(userId: string, password: string) {
+    return await this.userRepository.changeUserPassword(userId, password);
   }
 
   async userExistsByEmail(email: string) {
-    const userExists = await this.userRepository.findUserByEmail(email);
+    return await this.userRepository.userExistsByEmail(email);
+  }
 
-    return !!userExists;
+  async userExistsByPhone(phone: string) {
+    return await this.userRepository.userExistsByPhone(phone);
   }
 
   async createUser(user: User) {

@@ -1,6 +1,7 @@
 export type CreateUserProps = {
   name: string;
-  email: string;
+  email?: string;
+  phone?: string;
   password: string;
   roleId: number;
 };

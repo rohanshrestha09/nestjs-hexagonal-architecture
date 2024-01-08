@@ -43,13 +43,35 @@ export class MySQLSequelizeUserRepositoryImpl extends UserRepository {
     return User.toDomain(user);
   }
 
+  async findUserByPhone(phone: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        phone,
+      },
+      include: ['role', 'privileges'],
+      rejectOnEmpty: true,
+    });
+
+    return User.toDomain(user);
+  }
+
   async createUser(user: User) {
     return User.toDomain(await this.userRepository.create({ ...user }));
   }
 
-  async userExists(email: string) {
+  async userExistsByEmail(email: string) {
     const user = await this.userRepository.findOne({ where: { email } });
 
     return !!user;
+  }
+
+  async userExistsByPhone(phone: string) {
+    const user = await this.userRepository.findOne({ where: { phone } });
+
+    return !!user;
+  }
+
+  async changeUserPassword(userId: string, password: string) {
+    await this.userRepository.update({ password }, { where: { id: userId } });
   }
 }

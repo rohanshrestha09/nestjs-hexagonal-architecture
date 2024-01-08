@@ -25,8 +25,11 @@ export class MySQLTypeORMUserEntity extends BaseEntity implements User {
   @Column()
   name: string;
 
+  @Column({ unique: true, nullable: true })
+  phone: string;
+
   @IsEmail()
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   email: string;
 
   @Column({ select: false })

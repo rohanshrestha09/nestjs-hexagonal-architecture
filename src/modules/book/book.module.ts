@@ -32,6 +32,6 @@ import { BookUseCaseImpl } from './application/usecases/book.usecase';
       useClass: MySQLTypeORMBookRepositoryImpl,
     },
   ],
-  exports: [AdminBookUseCase, UserBookUseCase],
+  exports: [BookUseCase, AdminBookUseCase, UserBookUseCase],
 })
 export class BookModule {}

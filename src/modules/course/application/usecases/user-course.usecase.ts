@@ -63,4 +63,8 @@ export class UserCourseUseCaseImpl implements UserCourseUseCase {
   async enrollCourseByCode(code: string, user: User) {
     await this.courseRepository.addUser(code, user);
   }
+
+  async getEnrolledCoursesCount(user: User) {
+    return await this.courseRepository.countUserCourses(user);
+  }
 }

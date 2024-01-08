@@ -16,4 +16,5 @@ export abstract class UserCourseUseCase {
     courseId: number,
     user: User,
   ): Promise<{ data: Course; blogCount: number; bookCount: number }>;
+  abstract getEnrolledCoursesCount(user: User): Promise<number>;
 }

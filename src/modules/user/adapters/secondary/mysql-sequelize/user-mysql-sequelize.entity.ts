@@ -32,8 +32,15 @@ export class MySQLSequelizeUserEntity extends Model implements User {
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
 
+  @Column({
+    type: DataType.STRING,
+    unique: true,
+    allowNull: true,
+  })
+  phone: string;
+
   @IsEmail
-  @Column({ type: DataType.STRING, unique: true, allowNull: false })
+  @Column({ type: DataType.STRING, unique: true, allowNull: true })
   email: string;
 
   @Column({ type: DataType.STRING, allowNull: false })

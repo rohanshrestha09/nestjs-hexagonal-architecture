@@ -26,6 +26,7 @@ export class MySQLTypeORMUserRepositoryImpl implements UserRepository {
       where: { id: userId },
       relations: {
         role: true,
+        privileges: true,
       },
     });
 
@@ -39,6 +40,21 @@ export class MySQLTypeORMUserRepositoryImpl implements UserRepository {
       },
       relations: {
         role: true,
+        privileges: true,
+      },
+    });
+
+    return User.toDomain(user);
+  }
+
+  async findUserByPhone(phone: string) {
+    const user = await this.userRepository.findOneOrFail({
+      where: {
+        phone,
+      },
+      relations: {
+        role: true,
+        privileges: true,
       },
     });
 
@@ -51,7 +67,15 @@ export class MySQLTypeORMUserRepositoryImpl implements UserRepository {
     );
   }
 
-  async userExists(email: string) {
+  async userExistsByEmail(email: string) {
     return await this.userRepository.exist({ where: { email } });
+  }
+
+  async userExistsByPhone(phone: string) {
+    return await this.userRepository.exist({ where: { phone } });
+  }
+
+  async changeUserPassword(userId: string, password: string) {
+    await this.userRepository.update({ id: userId }, { password });
   }
 }

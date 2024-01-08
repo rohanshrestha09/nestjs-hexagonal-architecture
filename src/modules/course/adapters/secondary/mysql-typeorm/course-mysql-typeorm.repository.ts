@@ -113,4 +113,8 @@ export class MySQLTypeORMCourseRepositoryImpl implements CourseRepository {
 
     return [Course.toDomains(courses), count] as [Course[], number];
   }
+
+  async countUserCourses(user: User) {
+    return await this.courseRepository.count({ where: { users: [user] } });
+  }
 }
