@@ -5,6 +5,9 @@ import { MySQLTypeORMBookEntity } from './book-mysql-typeorm.entity';
 import { BookRepository } from 'src/modules/book/ports/out/book-repository.port';
 import { QueryBookDto } from 'src/modules/book/application/dto/query-book.dto';
 import { Book } from 'src/modules/book/domain/book.domain';
+import { User } from 'src/modules/user/domain/user.domain';
+import { Course } from 'src/modules/course/domain/course.domain';
+import { BOOK_STATUS } from 'src/modules/book/infrastructure/enums/book.enum';
 
 @Injectable()
 export class MySQLTypeORMBookRepositoryImpl implements BookRepository {
@@ -73,45 +76,25 @@ export class MySQLTypeORMBookRepositoryImpl implements BookRepository {
     await this.bookRepository.update({ code }, book);
   }
 
-  async findUserBooksByCourseId({
-    userId,
-    courseId,
-  }: {
-    userId: string;
-    courseId: number;
-  }) {
+  async findUserBooksByCourse(user: User, course: Course) {
     return Book.toDomains(
       await this.bookRepository.find({
         where: {
-          courses: {
-            id: courseId,
-            users: {
-              id: userId,
-            },
-          },
+          courses: [course],
         },
       }),
     );
   }
 
-  async findUserBooksByCourseCode({
-    userId,
-    courseCode,
-  }: {
-    userId: string;
-    courseCode: string;
-  }) {
-    return Book.toDomains(
-      await this.bookRepository.find({
-        where: {
-          courses: {
-            code: courseCode,
-            users: {
-              id: userId,
-            },
-          },
-        },
-      }),
-    );
+  async countAllCourseBooks(course: Course) {
+    return await this.bookRepository.count({
+      where: { courses: [course] },
+    });
+  }
+
+  async countPublishedCourseBooks(course: Course) {
+    return await this.bookRepository.count({
+      where: { status: BOOK_STATUS.PUBLISHED, courses: [course] },
+    });
   }
 }

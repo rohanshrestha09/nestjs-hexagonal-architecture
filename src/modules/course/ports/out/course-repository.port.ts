@@ -1,5 +1,8 @@
-import { QueryCourseDto } from '../../application/dto/query-course.dto';
+import { User } from 'src/modules/user/domain/user.domain';
+import { Book } from 'src/modules/book/domain/book.domain';
 import { Course } from '../../domain/course.domain';
+import { Blog } from 'src/modules/blog/domain/blog.domain';
+import { QueryCourseDto } from '../../application/dto/query-course.dto';
 
 export abstract class CourseRepository {
   abstract findAllCourses(
@@ -13,36 +16,13 @@ export abstract class CourseRepository {
     course: Partial<Course>,
   ): Promise<void>;
   abstract updateCourseById(id: number, course: Partial<Course>): Promise<void>;
-  abstract addBook({
-    bookCode,
-    courseCode,
-  }: {
-    bookCode: string;
-    courseCode: string;
-  }): Promise<void>;
-  abstract addUser({
-    userId,
-    courseCode,
-  }: {
-    userId: string;
-    courseCode: string;
-  }): Promise<void>;
-  abstract findCourseByIdAndUserId({
-    courseId,
-    userId,
-  }: {
-    courseId: number;
-    userId: string;
-  }): Promise<Course>;
-  abstract findCourseByCodeAndUserId({
-    code,
-    userId,
-  }: {
-    code: string;
-    userId: string;
-  }): Promise<Course>;
-  abstract findAllCoursesByUserId(
-    userId: string,
+  abstract addBook(courseCode: string, book: Book): Promise<void>;
+  abstract addUser(courseCode: string, user: User): Promise<void>;
+  abstract addBlog(courseCode: string, blog: Blog): Promise<void>;
+  abstract findCourseByIdAndUser(courseId: number, user: User): Promise<Course>;
+  abstract findCourseByCodeAndUser(code: string, user: User): Promise<Course>;
+  abstract findAllCoursesByUser(
+    user: User,
     queryCourseDto: QueryCourseDto,
   ): Promise<[Course[], number]>;
 }

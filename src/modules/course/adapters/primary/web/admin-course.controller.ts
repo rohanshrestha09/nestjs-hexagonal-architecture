@@ -17,6 +17,7 @@ import { QueryCourseDto } from 'src/modules/course/application/dto/query-course.
 import { CreateCourseDto } from 'src/modules/course/application/dto/create-course.dto';
 import { UpdateCourseDto } from 'src/modules/course/application/dto/update-course.dto';
 import { AddCourseBookDto } from 'src/modules/course/application/dto/add-course-book.dto';
+import { Book } from 'src/modules/book/domain/book.domain';
 import { ROLE } from 'src/modules/role/infrastructure/enums/role.enum';
 
 @ApiBearerAuth()
@@ -74,10 +75,11 @@ export class AdminCourseController {
     @Param('code') courseCode: string,
     @Body(new ValidationPipe()) addCourseBookDto: AddCourseBookDto,
   ) {
-    await this.adminCourseUseCase.addAdminCourseBook({
-      bookCode: addCourseBookDto.bookCode,
-      courseCode,
-    });
+    const book = new Book();
+
+    book.code = addCourseBookDto.bookCode;
+
+    await this.adminCourseUseCase.addAdminCourseBook(courseCode, book);
 
     return new ResponseDto('Book Added');
   }

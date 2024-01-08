@@ -34,7 +34,7 @@ export class UserBlogController {
     const { page, size } = queryBlogDto;
 
     const [blogs, count] = await this.userBlogUseCase.getUserBlogs(
-      user.id,
+      user,
       queryBlogDto,
     );
 
@@ -50,7 +50,7 @@ export class UserBlogController {
   async findOne(@Param('slug') slug: string, @User() user: UserDomain) {
     return new ResponseDto(
       'Blog Fetched',
-      await this.userBlogUseCase.getUserBlogBySlug({ userId: user.id, slug }),
+      await this.userBlogUseCase.getUserBlogBySlug(slug, user),
     );
   }
 
@@ -72,7 +72,7 @@ export class UserBlogController {
     @User() user: UserDomain,
   ) {
     await this.userBlogUseCase.updateUserBlogBySlug(
-      { userId: user.id, slug },
+      { user: user, slug },
       Blog.update(updateBlogDto),
     );
 

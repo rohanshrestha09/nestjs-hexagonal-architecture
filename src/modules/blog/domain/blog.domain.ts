@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { kebabCase } from 'lodash';
 import { plainToInstance } from 'class-transformer';
 import { User } from 'src/modules/user/domain/user.domain';
+import { Course } from 'src/modules/course/domain/course.domain';
 import { CreateBlogProps, UpdateBlogProps } from './blog.types';
 
 export class Blog {
@@ -13,6 +14,7 @@ export class Blog {
   updatedAt: Date;
   userId: string;
   user: User;
+  courses: Course[];
 
   public static create(createBlogProps: CreateBlogProps) {
     const createBlogValidator = z.object({

@@ -1,5 +1,6 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   CreatedAt,
   DataType,
@@ -8,6 +9,8 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Blog } from 'src/modules/blog/domain/blog.domain';
+import { MySQLSequelizeCourseBlogEntity } from 'src/modules/course-blog/adapters/secondary/mysql-sequelize/course-blog-mysql-sequelize.entity';
+import { MySQLSequelizeCourseEntity } from 'src/modules/course/adapters/secondary/mysql-sequelize/course-mysql-sequelize.entity';
 import { MySQLSequelizeUserEntity } from 'src/modules/user/adapters/secondary/mysql-sequelize/user-mysql-sequelize.entity';
 
 @Table({ tableName: 'blog', modelName: 'blog' })
@@ -42,6 +45,12 @@ export class MySQLSequelizeBlogEntity extends Model implements Blog {
 
   @BelongsTo(() => MySQLSequelizeUserEntity, 'userId')
   user: MySQLSequelizeUserEntity;
+
+  @BelongsToMany(
+    () => MySQLSequelizeCourseEntity,
+    () => MySQLSequelizeCourseBlogEntity,
+  )
+  courses: MySQLSequelizeCourseEntity[];
 }
 
 export default MySQLSequelizeBlogEntity;

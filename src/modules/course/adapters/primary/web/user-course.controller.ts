@@ -29,7 +29,7 @@ export class UserCourseController {
     const { page, size } = queryCourseDto;
 
     const [courses, count] = await this.userCourseUseCase.getEnrolledCourses(
-      user.id,
+      user,
       queryCourseDto,
     );
 
@@ -45,20 +45,14 @@ export class UserCourseController {
   async findOne(@Param('code') code: string, @User() user: UserDomain) {
     return new ResponseDto(
       'Course Fetched',
-      await this.userCourseUseCase.getEnrolledCourseByCodeWithBooks({
-        userId: user.id,
-        courseCode: code,
-      }),
+      await this.userCourseUseCase.getEnrolledCourseByCodeWithBooks(code, user),
     );
   }
 
   @Post(':code')
   @ApiOperation({ summary: 'enroll course' })
   async enroll(@Param('code') code: string, @User() user: UserDomain) {
-    await this.userCourseUseCase.enrollCourseByCode({
-      userId: user.id,
-      courseCode: code,
-    });
+    await this.userCourseUseCase.enrollCourseByCode(code, user);
 
     return new ResponseDto('Course Enrolled');
   }

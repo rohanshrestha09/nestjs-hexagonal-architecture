@@ -4,6 +4,9 @@ import { Repository } from 'typeorm';
 import { MySQLTypeORMCourseEntity } from './course-mysql-typeorm.entity';
 import { CourseRepository } from 'src/modules/course/ports/out/course-repository.port';
 import { Course } from 'src/modules/course/domain/course.domain';
+import { Blog } from 'src/modules/blog/domain/blog.domain';
+import { User } from 'src/modules/user/domain/user.domain';
+import { Book } from 'src/modules/book/domain/book.domain';
 import { QueryCourseDto } from 'src/modules/course/application/dto/query-course.dto';
 import { COURSE_STATUS } from 'src/modules/course/infrastructure/enums/course.enum';
 
@@ -62,66 +65,43 @@ export class MySQLTypeORMCourseRepositoryImpl implements CourseRepository {
     await this.courseRepository.update({ code }, course);
   }
 
-  async addBook({
-    bookCode,
-    courseCode,
-  }: {
-    bookCode: string;
-    courseCode: string;
-  }) {
+  async addBook(code: string, book: Book) {
+    await this.courseRepository.update({ code }, { books: [book] });
+  }
+
+  async addUser(code: string, user: User) {
     await this.courseRepository.update(
-      { code: courseCode },
-      { books: [{ code: bookCode }] },
+      { code, status: COURSE_STATUS.PUBLISHED },
+      { users: [user] },
     );
   }
 
-  async addUser({
-    userId,
-    courseCode,
-  }: {
-    userId: string;
-    courseCode: string;
-  }) {
-    await this.courseRepository.update(
-      { code: courseCode, status: COURSE_STATUS.PUBLISHED },
-      { users: [{ id: userId }] },
-    );
+  async addBlog(code: string, blog: Blog) {
+    await this.courseRepository.update({ code }, { blogs: [blog] });
   }
 
-  async findCourseByIdAndUserId({
-    courseId,
-    userId,
-  }: {
-    courseId: number;
-    userId: string;
-  }) {
+  async findCourseByIdAndUser(id: number, user: User) {
     return Course.toDomain(
       await this.courseRepository.findOneOrFail({
-        where: { id: courseId, users: { id: userId } },
+        where: { id, users: [user] },
       }),
     );
   }
 
-  async findCourseByCodeAndUserId({
-    code,
-    userId,
-  }: {
-    code: string;
-    userId: string;
-  }) {
+  async findCourseByCodeAndUser(code: string, user: User) {
     return Course.toDomain(
       await this.courseRepository.findOneOrFail({
-        where: { code, users: { id: userId } },
+        where: { code, users: [user] },
       }),
     );
   }
 
-  async findAllCoursesByUserId(
-    userId: string,
+  async findAllCoursesByUser(
+    user: User,
     { page, size, sort, order }: QueryCourseDto,
   ) {
     const courses = await this.courseRepository.find({
-      where: { users: { id: userId } },
+      where: { users: [user] },
       skip: (page - 1) * size,
       take: size,
       order: {

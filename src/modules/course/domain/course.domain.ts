@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { plainToInstance } from 'class-transformer';
 import { Book } from 'src/modules/book/domain/book.domain';
 import { User } from 'src/modules/user/domain/user.domain';
+import { Blog } from 'src/modules/blog/domain/blog.domain';
 import { CreateCourseProps, UpdateCourseProps } from './course.type';
 import { COURSE_STATUS } from '../infrastructure/enums/course.enum';
 
@@ -15,6 +16,7 @@ export class Course {
   status: COURSE_STATUS;
   books: Book[];
   users: User[];
+  blogs: Blog[];
 
   public static create(createCourseProps: CreateCourseProps) {
     const createCourseValidator = z.object({

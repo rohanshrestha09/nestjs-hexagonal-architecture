@@ -1,5 +1,7 @@
+import { User } from 'src/modules/user/domain/user.domain';
 import { QueryBookDto } from '../../application/dto/query-book.dto';
 import { Book } from '../../domain/book.domain';
+import { Course } from 'src/modules/course/domain/course.domain';
 
 export abstract class BookRepository {
   abstract findAllBooks(queryBookDto: QueryBookDto): Promise<[Book[], number]>;
@@ -10,18 +12,7 @@ export abstract class BookRepository {
   abstract updateBookByCode(code: string, book: Partial<Book>): Promise<void>;
   abstract findAllBooksByCourseCode(code: string): Promise<Book[]>;
   abstract findAllBooksByCourseId(id: number): Promise<Book[]>;
-  abstract findUserBooksByCourseId({
-    userId,
-    courseId,
-  }: {
-    userId: string;
-    courseId: number;
-  }): Promise<Book[]>;
-  abstract findUserBooksByCourseCode({
-    userId,
-    courseCode,
-  }: {
-    userId: string;
-    courseCode: string;
-  }): Promise<Book[]>;
+  abstract findUserBooksByCourse(user: User, course: Course): Promise<Book[]>;
+  abstract countAllCourseBooks(course: Course): Promise<number>;
+  abstract countPublishedCourseBooks(course: Course): Promise<number>;
 }

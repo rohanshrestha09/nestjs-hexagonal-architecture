@@ -13,6 +13,8 @@ import { MySQLSequelizeCourseBookEntity } from 'src/modules/course-book/adapters
 import { MySQLSequelizeUserCourseEntity } from 'src/modules/user-course/adapters/secondary/mysql-sequelize/user-course-mysql-sequelize.entity';
 import { MySQLSequelizeUserEntity } from 'src/modules/user/adapters/secondary/mysql-sequelize/user-mysql-sequelize.entity';
 import { COURSE_STATUS } from 'src/modules/course/infrastructure/enums/course.enum';
+import MySQLSequelizeBlogEntity from 'src/modules/blog/adapters/secondary/mysql-sequelize/blog-mysql-sequelize.entity';
+import MySQLSequelizeCourseBlogEntity from 'src/modules/course-blog/adapters/secondary/mysql-sequelize/course-blog-mysql-sequelize.entity';
 
 @Table({ tableName: 'course', modelName: 'course' })
 export class MySQLSequelizeCourseEntity extends Model implements Course {
@@ -73,6 +75,12 @@ export class MySQLSequelizeCourseEntity extends Model implements Course {
     () => MySQLSequelizeUserCourseEntity,
   )
   users: MySQLSequelizeUserEntity[];
+
+  @BelongsToMany(
+    () => MySQLSequelizeBlogEntity,
+    () => MySQLSequelizeCourseBlogEntity,
+  )
+  blogs: MySQLSequelizeBlogEntity[];
 }
 
 export default MySQLSequelizeCourseEntity;

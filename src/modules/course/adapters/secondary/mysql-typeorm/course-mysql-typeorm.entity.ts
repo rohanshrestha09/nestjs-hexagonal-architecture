@@ -12,6 +12,7 @@ import { Course } from 'src/modules/course/domain/course.domain';
 import { MySQLTypeORMBookEntity } from 'src/modules/book/adapters/secondary/mysql-typeorm/book-mysql-typeorm.entity';
 import { COURSE_STATUS } from 'src/modules/course/infrastructure/enums/course.enum';
 import { MySQLTypeORMUserEntity } from 'src/modules/user/adapters/secondary/mysql-typeorm/user-mysql-typeorm.entity';
+import { MySQLTypeORMBlogEntity } from 'src/modules/blog/adapters/secondary/mysql-typeorm/blog-mysql-typeorm.entity';
 
 @Entity('course')
 export class MySQLTypeORMCourseEntity extends BaseEntity implements Course {
@@ -52,4 +53,7 @@ export class MySQLTypeORMCourseEntity extends BaseEntity implements Course {
 
   @ManyToMany(() => MySQLTypeORMUserEntity, (user) => user.courses)
   users: MySQLTypeORMUserEntity[];
+
+  @ManyToMany(() => MySQLTypeORMBlogEntity, (blog) => blog.courses)
+  blogs: MySQLTypeORMBlogEntity[];
 }

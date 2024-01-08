@@ -3,27 +3,22 @@ import { UserBlogUseCase } from '../../ports/in/user-blog-usecase.port';
 import { BlogRepository } from '../../ports/out/blog-repository.port';
 import { Blog } from '../../domain/blog.domain';
 import { QueryBlogDto } from '../dto/query-blog.dto';
+import { User } from 'src/modules/user/domain/user.domain';
 
 @Injectable()
 export class UserBlogUseCaseImpl implements UserBlogUseCase {
   constructor(private readonly blogRepository: BlogRepository) {}
 
-  async getUserBlogs(userId: string, queryBlogDto: QueryBlogDto) {
-    return await this.blogRepository.findAllBlogsByUserId(userId, queryBlogDto);
+  async getUserBlogs(user: User, queryBlogDto: QueryBlogDto) {
+    return await this.blogRepository.findAllBlogsByUser(user, queryBlogDto);
   }
 
-  async getUserBlogById({
-    userId,
-    blogId,
-  }: {
-    userId: string;
-    blogId: number;
-  }) {
-    return await this.blogRepository.findBlogByIdAndUserId({ userId, blogId });
+  async getUserBlogById(id: number, user: User) {
+    return await this.blogRepository.findBlogByIdAndUser(id, user);
   }
 
-  async getUserBlogBySlug({ userId, slug }: { userId: string; slug: string }) {
-    return await this.blogRepository.findBlogBySlugAndUserId({ userId, slug });
+  async getUserBlogBySlug(slug: string, user: User) {
+    return await this.blogRepository.findBlogBySlugAndUser(slug, user);
   }
 
   async createUserBlog(blog: Blog) {
@@ -31,9 +26,9 @@ export class UserBlogUseCaseImpl implements UserBlogUseCase {
   }
 
   async updateUserBlogBySlug(
-    { userId, slug }: { userId: string; slug: string },
+    { user, slug }: { user: User; slug: string },
     blog: Partial<Blog>,
   ) {
-    await this.blogRepository.updateBlogBySlugAndUserId({ userId, slug }, blog);
+    await this.blogRepository.updateBlogBySlugAndUser({ user, slug }, blog);
   }
 }

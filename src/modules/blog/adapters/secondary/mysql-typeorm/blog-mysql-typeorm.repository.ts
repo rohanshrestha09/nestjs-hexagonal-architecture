@@ -5,6 +5,8 @@ import { BlogRepository } from 'src/modules/blog/ports/out/blog-repository.port'
 import { MySQLTypeORMBlogEntity } from './blog-mysql-typeorm.entity';
 import { Blog } from 'src/modules/blog/domain/blog.domain';
 import { QueryBlogDto } from 'src/modules/blog/application/dto/query-blog.dto';
+import { User } from 'src/modules/user/domain/user.domain';
+import { Course } from 'src/modules/course/domain/course.domain';
 
 @Injectable()
 export class MySQLTypeORMBlogRepositoryImpl implements BlogRepository {
@@ -27,12 +29,12 @@ export class MySQLTypeORMBlogRepositoryImpl implements BlogRepository {
     return [Blog.toDomains(blogs), count] as [Blog[], number];
   }
 
-  async findAllBlogsByUserId(
-    userId: string,
+  async findAllBlogsByUser(
+    user: User,
     { page, size, sort, order }: QueryBlogDto,
   ) {
     const blogs = await this.blogRepository.find({
-      where: { userId },
+      where: { user },
       skip: (page - 1) * size,
       take: size,
       order: {
@@ -58,18 +60,12 @@ export class MySQLTypeORMBlogRepositoryImpl implements BlogRepository {
     );
   }
 
-  async findBlogByIdAndUserId({
-    userId,
-    blogId,
-  }: {
-    userId: string;
-    blogId: number;
-  }) {
+  async findBlogByIdAndUser(id: number, user: User) {
     return Blog.toDomain(
       await this.blogRepository.findOneOrFail({
         where: {
-          id: blogId,
-          userId,
+          id,
+          user,
         },
         relations: {
           user: true,
@@ -91,18 +87,12 @@ export class MySQLTypeORMBlogRepositoryImpl implements BlogRepository {
     );
   }
 
-  async findBlogBySlugAndUserId({
-    userId,
-    slug,
-  }: {
-    userId: string;
-    slug: string;
-  }) {
+  async findBlogBySlugAndUser(slug: string, user: User) {
     return Blog.toDomain(
       await this.blogRepository.findOneOrFail({
         where: {
           slug,
-          userId,
+          user,
         },
         relations: {
           user: true,
@@ -121,10 +111,20 @@ export class MySQLTypeORMBlogRepositoryImpl implements BlogRepository {
     await this.blogRepository.update({ slug }, blog);
   }
 
-  async updateBlogBySlugAndUserId(
-    { userId, slug }: { userId: string; slug: string },
+  async updateBlogBySlugAndUser(
+    { user, slug }: { user: User; slug: string },
     blog: Partial<Blog>,
   ) {
-    await this.blogRepository.update({ userId, slug }, blog);
+    await this.blogRepository.update({ user, slug }, blog);
+  }
+
+  async countBlogs(condition?: Blog) {
+    return await this.blogRepository.count({
+      where: condition && { ...condition },
+    });
+  }
+
+  async countAllCourseBlogs(course: Course) {
+    return await this.blogRepository.count({ where: { courses: [course] } });
   }
 }
