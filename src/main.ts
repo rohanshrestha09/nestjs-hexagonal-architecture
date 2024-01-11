@@ -5,7 +5,7 @@ import {
   StorageDriver,
 } from 'typeorm-transactional';
 import { AppModule } from './app.module';
-import { AllExceptionsFilter } from 'src/utils/exception.filter';
+import { AllExceptionsFilter } from './frameworks/primary/filters/exception.filter';
 
 async function bootstrap() {
   initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });

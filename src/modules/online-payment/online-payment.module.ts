@@ -3,11 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { EsewaModule } from '@dallotech/nestjs-esewa';
 import { KhaltiModule } from '@dallotech/nestjs-khalti';
-import { AllConfig } from 'src/config/config.type';
+import { AllConfig } from 'src/infrastructure/config/config.type';
 import { EsewaOptions } from '@dallotech/nestjs-esewa/dist/esewa.interface';
 import { KhaltiOptions } from '@dallotech/nestjs-khalti/dist/khalti.interface';
-import { OnlinePaymentUseCase } from './ports/in/online-payment-usecase.port';
-import { OnlinePaymentUseCaseImpl } from './application/usecases/online-payment.usecase';
+import { OnlinePaymentUseCase } from 'src/core/ports/in/online-payment/online-payment-usecase.port';
+import { OnlinePaymentUseCaseImpl } from 'src/core/application/usecases/online-payment/online-payment.usecase';
 
 @Module({
   imports: [

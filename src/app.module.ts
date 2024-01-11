@@ -7,18 +7,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
-import { appConfig } from './config/app.config';
-import { authConfig } from './modules/auth/infrastructure/configs/auth.config';
-import {
-  sequelizeDatabaseConfig,
-  typeORMDtabaseConfig,
-} from './database/config/database.config';
-import { esewaConfig } from './modules/online-payment/infrastructure/configs/esewa-online-payment.config';
-import { khaltiConfig } from './modules/online-payment/infrastructure/configs/khalti-online-payment.config';
-import { TypeOrmConfigService } from './database/config/typeorm-config.service';
-import { SequelizeConfigService } from './database/config/sequelize-config.service';
-import { RolesGuard } from './modules/role/infrastructure/guards/role.guard';
-import { JwtAuthGuard } from './modules/auth/infrastructure/guards/jwt-auth.guard';
 import { RoleModule } from './modules/role/role.module';
 import { PrivilegeModule } from './modules/privilege/privilege.module';
 import { UserModule } from './modules/user/user.module';
@@ -29,6 +17,20 @@ import { BlogModule } from './modules/blog/blog.module';
 import { BookModule } from './modules/book/book.module';
 import { CourseModule } from './modules/course/course.module';
 import { OtpModule } from './modules/otp/otp.module';
+import { appConfig } from './infrastructure/config/app.config';
+import {
+  TypeOrmConfigService,
+  typeORMDtabaseConfig,
+} from './infrastructure/database/config/typeorm.config';
+import {
+  SequelizeConfigService,
+  sequelizeDatabaseConfig,
+} from './infrastructure/database/config/sequelize.config';
+import { esewaConfig } from './infrastructure/config/esewa.config';
+import { khaltiConfig } from './infrastructure/config/khalti.config';
+import { authConfig } from './infrastructure/config/auth.config';
+import { JwtAuthGuard } from './frameworks/primary/guards/jwt-auth.guard';
+import { RolesGuard } from './frameworks/primary/guards/role.guard';
 
 @Module({
   imports: [

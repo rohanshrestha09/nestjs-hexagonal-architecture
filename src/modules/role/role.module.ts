@@ -1,16 +1,14 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RoleController } from './adapters/primary/web/role.controller';
-import { RoleRepository } from './ports/out/role-repository.port';
-import { MySQLTypeORMRoleEntity } from './adapters/secondary/mysql-typeorm/role-mysql-typeorm.entity';
-import { MySQLTypeORMRoleRepositoryImpl } from './adapters/secondary/mysql-typeorm/role-mysql-typeorm.repository';
-import { RoleUseCaseImpl } from './application/usecases/role.usecase';
-import { RoleUseCase } from './ports/in/role-usecase.port';
+import { RoleUseCaseImpl } from 'src/core/application/usecases/role/role.usecase';
+import { RoleUseCase } from 'src/core/ports/in/role/role-usecase.port';
+import { RoleRepository } from 'src/core/ports/out/role/role-repository.port';
+import { MySQLTypeORMRoleEntity } from 'src/frameworks/secondary/mysql-typeorm/role/role-mysql-typeorm.entity';
+import { MySQLTypeORMRoleRepositoryImpl } from 'src/frameworks/secondary/mysql-typeorm/role/role-mysql-typeorm.repository';
 
 @Global()
 @Module({
   imports: [TypeOrmModule.forFeature([MySQLTypeORMRoleEntity])],
-  controllers: [RoleController],
   providers: [
     {
       provide: RoleUseCase,

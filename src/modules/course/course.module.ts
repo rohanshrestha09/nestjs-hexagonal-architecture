@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MySQLTypeORMCourseEntity } from './adapters/secondary/mysql-typeorm/course-mysql-typeorm.entity';
-import { AdminCourseController } from './adapters/primary/web/admin-course.controller';
-import { AdminCourseUseCase } from './ports/in/admin-course.usecase';
-import { AdminCourseUseCaseImpl } from './application/usecases/admin-course.usecase';
-import { CourseRepository } from './ports/out/course-repository.port';
-import { MySQLTypeORMCourseRepositoryImpl } from './adapters/secondary/mysql-typeorm/course-mysql-typeorm.repository';
-import { UserCourseUseCase } from './ports/in/user-course.usecase';
-import { UserCourseUseCaseImpl } from './application/usecases/user-course.usecase';
-import { UserCourseController } from './adapters/primary/web/user-course.controller';
-import { BookModule } from '../book/book.module';
+import { MySQLTypeORMCourseEntity } from 'src/frameworks/secondary/mysql-typeorm/course/course-mysql-typeorm.entity';
 import { BlogModule } from '../blog/blog.module';
+import { BookModule } from '../book/book.module';
+import { AdminCourseController } from 'src/frameworks/primary/controllers/course/admin-course.controller';
+import { UserCourseController } from 'src/frameworks/primary/controllers/course/user-course.controller';
+import { AdminCourseUseCase } from 'src/core/ports/in/course/admin-course-usecase.port';
+import { AdminCourseUseCaseImpl } from 'src/core/application/usecases/course/admin-course.usecase';
+import { UserCourseUseCase } from 'src/core/ports/in/course/user-course-usecase.port';
+import { UserCourseUseCaseImpl } from 'src/core/application/usecases/course/user-course.usecase';
+import { CourseRepository } from 'src/core/ports/out/course/course-repository.port';
+import { MySQLTypeORMCourseRepositoryImpl } from 'src/frameworks/secondary/mysql-typeorm/course/course-mysql-typeorm.repository';
 
 @Module({
   imports: [

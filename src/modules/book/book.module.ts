@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MySQLTypeORMBookEntity } from './adapters/secondary/mysql-typeorm/book-mysql-typeorm.entity';
-import { AdminBookController } from './adapters/primary/web/admin-book.controller';
-import { AdminBookUseCase } from './ports/in/admin-book-usecase.port';
-import { AdminBookUseCaseImpl } from './application/usecases/admin-book.usecase';
-import { BookRepository } from './ports/out/book-repository.port';
-import { MySQLTypeORMBookRepositoryImpl } from './adapters/secondary/mysql-typeorm/book-mysql-typeorm.repository';
-import { UserBookUseCase } from './ports/in/user-book-usecase.port';
-import { UserBookUseCaseImpl } from './application/usecases/user-book.usecase';
-import { BookUseCase } from './ports/in/book-usecase.port';
-import { BookUseCaseImpl } from './application/usecases/book.usecase';
+import { AdminBookUseCaseImpl } from 'src/core/application/usecases/book/admin-book.usecase';
+import { BookUseCaseImpl } from 'src/core/application/usecases/book/book.usecase';
+import { UserBookUseCaseImpl } from 'src/core/application/usecases/book/user-book.usecase';
+import { AdminBookUseCase } from 'src/core/ports/in/book/admin-book-usecase.port';
+import { BookUseCase } from 'src/core/ports/in/book/book-usecase.port';
+import { UserBookUseCase } from 'src/core/ports/in/book/user-book-usecase.port';
+import { BookRepository } from 'src/core/ports/out/book/book-repository.port';
+import { AdminBookController } from 'src/frameworks/primary/controllers/book/admin-book.controller';
+import { MySQLTypeORMBookEntity } from 'src/frameworks/secondary/mysql-typeorm/book/book-mysql-typeorm.entity';
+import { MySQLTypeORMBookRepositoryImpl } from 'src/frameworks/secondary/mysql-typeorm/book/book-mysql-typeorm.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MySQLTypeORMBookEntity])],

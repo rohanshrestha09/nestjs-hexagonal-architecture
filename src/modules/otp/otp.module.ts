@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { OtpUseCase } from './ports/in/otp-usecase.port';
-import { OtpUseCaseImpl } from './application/usecases/otp.usecase';
+import { OtpUseCaseImpl } from 'src/core/application/usecases/otp/otp.usecase';
+import { OtpUseCase } from 'src/core/ports/in/otp/otp-usecase.port';
 
 @Module({
   providers: [

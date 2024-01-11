@@ -1,25 +1,25 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PrivilegeController } from './adapters/primary/web/privilege.controller';
-import { PrivilegeRepository } from './ports/out/privilege-repository.port';
-import { MySQLTypeORMPrivilegeEntity } from './adapters/secondary/mysql-typeorm/privilege-mysql-typeorm.entity';
-import { MySQLTypeORMPrivilegeRepositoryImpl } from './adapters/secondary/mysql-typeorm/privilege-mysql-typeorm.repository';
-import { PrivilegeUseCase } from './ports/in/privilege-usecase.port';
-import { PrivilegeUseCaseImpl } from './application/usecases/privilege.usecase';
+import { AdminPrivilegeUseCaseImpl } from 'src/core/application/usecases/privilege/admin-privilige.usecase';
+import { AdminPrivilegeUseCase } from 'src/core/ports/in/privilege/admin-privilege-usecase.port';
+import { PrivilegeRepository } from 'src/core/ports/out/privilege/privilege-repository.port';
+import { AdminPrivilegeController } from 'src/frameworks/primary/controllers/privilege/admin-privilege.controller';
+import { MySQLTypeORMPrivilegeEntity } from 'src/frameworks/secondary/mysql-typeorm/privilege/privilege-mysql-typeorm.entity';
+import { MySQLTypeORMPrivilegeRepositoryImpl } from 'src/frameworks/secondary/mysql-typeorm/privilege/privilege-mysql-typeorm.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MySQLTypeORMPrivilegeEntity])],
-  controllers: [PrivilegeController],
+  controllers: [AdminPrivilegeController],
   providers: [
     {
-      provide: PrivilegeUseCase,
-      useClass: PrivilegeUseCaseImpl,
+      provide: AdminPrivilegeUseCase,
+      useClass: AdminPrivilegeUseCaseImpl,
     },
     {
       provide: PrivilegeRepository,
       useClass: MySQLTypeORMPrivilegeRepositoryImpl,
     },
   ],
-  exports: [PrivilegeRepository, PrivilegeUseCase],
+  exports: [PrivilegeRepository, AdminPrivilegeUseCase],
 })
 export class PrivilegeModule {}

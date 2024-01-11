@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TransactionController } from './adapters/primary/web/transaction.controller';
+import { MySQLTypeORMTransactionEntity } from 'src/frameworks/secondary/mysql-typeorm/transaction/transaction-mysql-sequelize.entity';
 import { OnlinePaymentModule } from '../online-payment/online-payment.module';
-import { TransactionRepository } from './ports/out/transaction-repository.port';
-import { MySQLTypeORMTransactionEntity } from './adapters/secondary/mysql-typeorm/transaction-mysql-typeorm.entity';
-import { TransactionUseCase } from './ports/in/transaction-usecase.port';
-import { TransactionUseCaseImpl } from './application/usecases/transaction.usecase';
-import { MySQLTypeORMTransactionRepositoryImpl } from './adapters/secondary/mysql-typeorm/transaction-mysql-typeorm.repository';
+import { TransactionController } from 'src/frameworks/primary/controllers/transaction/transaction.controller';
+import { TransactionUseCase } from 'src/core/ports/in/transaction/transaction-usecase.port';
+import { TransactionUseCaseImpl } from 'src/core/application/usecases/transaction/transaction.usecase';
+import { TransactionRepository } from 'src/core/ports/out/transaction/transaction-repository.port';
+import { MySQLTypeORMTransactionRepositoryImpl } from 'src/frameworks/secondary/mysql-typeorm/transaction/transaction-mysql-typeorm.repository';
 
 @Module({
   imports: [

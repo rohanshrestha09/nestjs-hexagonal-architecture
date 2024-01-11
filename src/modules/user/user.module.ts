@@ -1,16 +1,14 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserController } from './adapters/primary/web/user.controller';
-import { MySQLTypeORMUserEntity } from './adapters/secondary/mysql-typeorm/user-mysql-typeorm.entity';
-import { UserUseCaseImpl } from './application/usecases/user.usecase';
-import { UserUseCase } from './ports/in/user-usecase.port';
-import { UserRepository } from './ports/out/user-repository.port';
-import { MySQLTypeORMUserRepositoryImpl } from './adapters/secondary/mysql-typeorm/user-mysql-typeorm.repository';
+import { UserUseCaseImpl } from 'src/core/application/usecases/user/user.usecase';
+import { UserUseCase } from 'src/core/ports/in/user/user-usecase.port';
+import { UserRepository } from 'src/core/ports/out/user/user-repository.port';
+import { MySQLTypeORMUserEntity } from 'src/frameworks/secondary/mysql-typeorm/user/user-mysql-typeorm.entity';
+import { MySQLTypeORMUserRepositoryImpl } from 'src/frameworks/secondary/mysql-typeorm/user/user-mysql-typeorm.repository';
 
 @Global()
 @Module({
   imports: [TypeOrmModule.forFeature([MySQLTypeORMUserEntity])],
-  controllers: [UserController],
   providers: [
     {
       provide: UserUseCase,
