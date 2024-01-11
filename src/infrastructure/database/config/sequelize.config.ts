@@ -48,7 +48,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
       database: this.configService.get('sequelizeDatabase.name', {
         infer: true,
       }),
-      models: [__dirname + '/../../**/*-sequelize/*.entity{.ts,.js}'],
+      models: [__dirname + '/../../**/*-sequelize/**/*.entity{.ts,.js}'],
       // autoLoadModels: true,
       define: {
         timestamps: true,
